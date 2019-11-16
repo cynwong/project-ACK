@@ -8,6 +8,7 @@
     left: 0;
     right: 0;
     filter: blur(2px);
+    z-index: -1;
 }     
 
 label {
@@ -37,4 +38,8 @@ label {
 
 .template {
     display:none;
+}
+
+#event-details-container{
+    background-color: hsla(0deg,0%,96%,80%);
 }
