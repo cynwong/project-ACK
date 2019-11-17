@@ -17,6 +17,7 @@ $(document).ready(function () {
         event.preventDefault();
         var country = $(".country").val().toLowerCase().trim();
         var city = $(".city").val().toLowerCase().trim();
+        console.log(city);
         var countryCode;
         console.log(country);
         var secondqueryURL = "https://restcountries.eu/rest/v2/name/" + country;
@@ -27,9 +28,7 @@ $(document).ready(function () {
             console.log(response);
             countryCode = response[0].alpha2Code;
             console.log(countryCode);
-
-            console.log(city);
-            var thirdqueryURL = "https://app.ticketmaster.com/discovery/v2/events.json?classificationName=arts-comedy&countryCode="+ countryCode +"&startDateTime=2019-11-16T14:00:00Z&endDateTime=2019-12-31T14:00:00Z&city=" + city + "&apikey=J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J"
+            var thirdqueryURL = "https://app.ticketmaster.com/discovery/v2/events.json?classificationName=arts,comedy&theatre&countryCode="+ countryCode +"&startDateTime=2019-11-16T14:00:00Z&endDateTime=2019-12-31T14:00:00Z&city=" + city + "&apikey=J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J"
             $.ajax({
                 url: thirdqueryURL,
                 method: "GET"
