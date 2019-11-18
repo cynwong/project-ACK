@@ -1,12 +1,3 @@
-$(document).ready(function(){
-    // render_events(response);
-    // render_events(response);
-    // render_events(response);
-    // render_events(response);
-    // render_events(response);
-    render_event_details(EVENT_DETAIL);
-});
-
 
 /**
  * Render events for user display. 
@@ -14,33 +5,51 @@ $(document).ready(function(){
  */
 function render_events(response){
     const elements = [];
+    const {_embedded: {events}} = response;
+    const events_container = $("#events-container");
 
-    for(let e of response._embedded.events){
-        //render each event
-        const event = $(".event.template").clone().removeClass("template");
-        const name = e.name;
-        const image = getImage(e.images);
+    //first clean up the container
+    events_container.empty();
 
-        event.attr("data-event-id",e.id);
-        event.find(".image img").attr({
-            src: image.url,
-            alt: e.name
+    for(let event of events){
+        //update each event information using event template. 
+        const eventElement = $(".event.template").clone().removeClass("template");
+        const {
+            classification,
+            dates:{
+                start: {dateTime:startDateTime},
+                timezone
+            },
+            id,
+            images,
+            info,
+            name, 
+            url,
+            } = event;
+        const imageURL = getImageURL(images);
+        const startDate = moment(startDateTime);
+        eventElement.attr("data-event-id",id);
+        eventElement.find(".image img").attr({
+            src: imageURL,
+            alt: name
         });
-        event.find(".title a").text(name);
-        event.find(".content").text(e.info);
-        event.find(".datetime time").text(e.dates.start.localDate);
-        elements.push(event);
+        eventElement.find(".title a").text(name);
+        eventElement.find(".title a").attr("href", url);
+        eventElement.find(".content").text(info);
+        eventElement.find(".datetime time").text(startDate.format("DD MMM, YYYY hh:mm a")); 
+        eventElement.find(".timezone").text(timezone);
+        elements.push(eventElement);
     }
-    $("#events-container").append(elements);
+    events_container.append(elements);
 }
 
-function getImage(imgArray){
+function getImageURL(imgArray){
     const image_settings = API_SETTTINGS.image;
     return imgArray.filter(
             img => img.ratio.localeCompare(image_settings.ratio)=== 0 && 
                     img.width === image_settings.width && 
                     img.height === image_settings.height
-        )[0];
+        )[0].url;
 }
 
 
@@ -67,12 +76,12 @@ function render_event_details(response){
     });
 
     // description section
-    container.find("description-section").append(
+    container.find(".description-section").append(
         $("<p>").addClass("info").text(response.info)
     )
 
     if(response.pleaseNote){
-        container.find("description-section").append(
+        container.find(".description-section").append(
             $("<p>").addClass("please-note").text(response.pleaseNote)
         );
     }
