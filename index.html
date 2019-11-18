@@ -26,10 +26,10 @@
         <div class="level-item">
             <div class="field has-addons">
                 <p class="control">
-                    <input class="input" type="text" placeholder="Find an event">
+                    <input class="input keyword" type="text" placeholder="Find an event">
                 </p>
                 <p class="control">
-                    <button class="button">
+                    <button class="button searchbykeyword">
                         Search
                     </button>
                 </p>
@@ -50,7 +50,7 @@
         <div class="column is-half is-offset-5" id="form">
 
             <div class="field">
-                <label class="label">Event Keyword</label>
+                <label class="label">Event Name</label>
                 <div class="control">
                     <input class="input is-info is-rounded" type="text" placeholder="Text input">
                 </div>
@@ -59,22 +59,39 @@
             <!-- //dropdown music , sports, arts,theatre& comedy, family&attartractions -->
 
             <div class="field">
+                <div class="field">
+                    <label class="label">What sort of event is this ?</label>
+                </div>
+
+                <div class="control">
+                    <div class="select is-warning is-rounded">
+                        <select>
+                            <option>Music</option>
+                            <option>Sports</option>
+                            <option>Arts, Theatre or Comedy</option>
+                            <option>Family & Attractions</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
                 <label class="label">City</label>
                 <div class="control">
-                    <input class="input is-success is-rounded" type="text" placeholder="Text input">
+                    <input class="input is-success is-rounded city" type="text" placeholder="Text input">
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">Country</label>
                 <div class="control">
-                    <input class="input is-warning is-rounded" type="text" placeholder="Text input">
+                    <input class="input is-warning is-rounded country" type="text" placeholder="Text input">
                 </div>
             </div>
 
             <div class="field is-grouped">
                 <div class="control">
-                    <button class="button is-link is-rounded is-hovered is-hovered">Search</button>
+                    <button class="button is-link is-rounded is-hovered is-hovered submit">Search</button>
                 </div>
                 <div class="control">
                     <button class="button is-link is-light is-rounded">Cancel</button>
@@ -86,80 +103,78 @@
     </div>
 
     <!-- This is search result display page -->
-
-    <div class="columns is-full">
-
-        <!-- This is card no1 -->
-
+    <!-- This is card template -->
+    <div class="column is-3 event template">
         <div class="card">
             <div class="card-image">
-                <figure class="image is-128x128">
-                    <img src=" " alt="Placeholder image">
+                <figure class="image">
+                    <img>
                 </figure>
             </div>
             <div class="card-content">
                 <div class="title">
-                    Event name
+                    <a href="#"></a>
                 </div>
                 <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                    <a href="#">#css</a> <a href="#">#responsive</a>
-                    <br>
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+
+
+                </div>
+                <div class="datetime">
+                    <time></time>
+                    <span class="timezone"></span>
                 </div>
             </div>
         </div>
 
-        <!-- This is card no2  -->
-
-        <div class="card">
-            <div class="card-image">
-                <figure class="image is-128x128">
-                    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="title">
-                    Event name
-                </div>
-                <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                    <a href="#">#css</a> <a href="#">#responsive</a>
-                    <br>
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                </div>
-            </div>
-        </div>
-
-        <!-- This is card no3 -->
-
-        <div class="card">
-            <div class="card-image">
-                <figure class="image is-128x128">
-                    <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="title">
-                    Event name
-                </div>
-                <div class="content">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                    <a href="#">#css</a> <a href="#">#responsive</a>
-                    <br>
-                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                </div>
-            </div>
-        </div>
     </div>
 
+
+    <div id="events-container" class="columns is-multiline is-0"></div>
+
+
+    <div id="event-details-container" class="columns">
+        <div class="column event-details is-10 is-offset-1 template" data-event-id="">
+            <section class="title-section">
+                <a class="official-link">
+                    <h3 class="title"></h3>
+                </a>
+            </section>
+            <section class="image-section">
+                <figure>
+                    <!-- event image -->
+                    <img>
+                </figure>
+            </section>
+            <section class="description-section">
+                <p>
+                    <!-- Event info -->
+                </p>
+            </section>
+            <section class="venue-section">
+                <p class="venue">
+                    Venues:
+                    <!-- <a>
+                        name of the venue & venue url as a href.
+                    </a> -->
+                </p>
+
+            </section>
+
+
+        </div>
+
+    </div>
 
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.26/moment-timezone.min.js"></script>
+
+    <script src="./assets/js/api.js"></script>
+    <script src="./assets/js/api_settings.js"></script>
+    <script src="./assets/js/temp_event_response.js"></script>
+    <script src="./assets/js/render_event.js"></script>
 </body>
 
 </html>

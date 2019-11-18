@@ -8,6 +8,7 @@
     left: 0;
     right: 0;
     filter: blur(2px);
+    z-index: -1;
 }     
 
 label {
@@ -35,4 +36,12 @@ label {
     margin-top: 30px;
     box-shadow: 6px 6px #888888;
     border-radius: 10px;
+}
+
+.template {
+    display:none;
+}
+
+#event-details-container{
+    background-color: hsla(0deg,0%,96%,80%);
 }
