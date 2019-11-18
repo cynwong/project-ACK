@@ -45,10 +45,10 @@ label {
     background-color: hsla(0deg,0%,96%,80%);
 }
 
-.template {
-    display:none;
+#map-container {
+    width: 400px;
+    height: 300px;
+    border-radius: 3px;
+    border: 1px solid #222222;
 }
 
-#event-details-container{
-    background-color: hsla(0deg,0%,96%,80%);
-}
