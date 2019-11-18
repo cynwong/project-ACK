@@ -86,34 +86,37 @@
     </div>
 
     <!-- This is search result display page -->
-
-    <div id="events-container" class="columns is-full">
-
-        <!-- This is card template -->
-        <div class="card event template">
-            <div class="card-image">
-                <figure class="image">
-                    <img>
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="title">
-                    <a href="#"></a>
-                </div>
-                <div class="content">
-                    
-                    
-                </div>
-                <div class="datetime">
-                    <time></time>
-                </div>
-            </div>
+    <!-- This is card template -->
+    <div class="column is-2 event template">
+        <div class="card">
+                <div class="card-image">
+                        <figure class="image">
+                            <img>
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <div class="title">
+                            <a href="#"></a>
+                        </div>
+                        <div class="content">
+                            
+                            
+                        </div>
+                        <div class="datetime">
+                            <time></time>
+                            <span class="timezone"></span>
+                        </div>
+                    </div>
         </div>
-
+        
     </div>
 
+
+    <div id="events-container" class="columns is-multiline is-0"></div>
+
+    
     <div id="event-details-container" class="columns">
-        <div class="column event-details is-10 is-offset-1" data-event-id="">
+        <div class="column event-details is-10 is-offset-1 template" data-event-id="">
             <section class="title-section">
                 <a class="official-link">
                     <h3 class="title"></h3>
@@ -137,16 +140,20 @@
                         name of the venue & venue url as a href.
                     </a> -->
                 </p>
-
+    
             </section>
-
-
+    
+    
         </div>
+    
     </div>
 
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.26/moment-timezone.min.js"></script>
+
     <script src="./assets/js/api.js"></script>
     <script src="./assets/js/api_settings.js"></script>
     <script src="./assets/js/temp_event_response.js"></script>
