@@ -15,8 +15,7 @@ label {
     font-size: 24px;
 
 }
-
-.column {
+#form {
     margin-top: 100px;
     margin-right: 100px;
 }  
@@ -27,13 +26,23 @@ label {
     border-color: black;
     background-color: white;
     z-index: 0;
-    border-radius: 2px;
+    border-radius: 10px;
+
 }
 
 .card {
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 30px;
+    box-shadow: 6px 6px #888888;
+}
+
+.template {
+    display:none;
+}
+
+#event-details-container{
+    background-color: hsla(0deg,0%,96%,80%);
 }
 
 .template {
