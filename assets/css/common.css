@@ -45,3 +45,11 @@ label {
 #event-details-container{
     background-color: hsla(0deg,0%,96%,80%);
 }
+
+.template {
+    display:none;
+}
+
+#event-details-container{
+    background-color: hsla(0deg,0%,96%,80%);
+}
