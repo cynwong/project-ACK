@@ -105,11 +105,6 @@ function render_event_details(response) {
 
     // ----- title section ----- 
     container.find(".title").text(name);
-    container.find(".official-link").attr({
-        href: url,
-        target: "_blank"
-    });
-
 
     // ----- attraction section ----- 
     let attractionLinks = [];
@@ -228,6 +223,11 @@ function render_event_details(response) {
     coords.push(parseFloat(latitude));
     console.log(coords)
     constructMap(coords);
+
+    // ----- TM-Link-section ------
+    container.find(".official-link").attr({
+        href: url,
+    });
 
     //now display the container. 
     container.show();
