@@ -1,10 +1,12 @@
 
 /**
  * Construct Map and display in Map container. 
- * @param {array} coords format [longitude, latitude]
+ * 
+ * @param {number[]} coords format [longitude, latitude]
+ * 
  */
 function constructMap(coords) {
-    if (!(coords instanceof Array) || coords.length === 2) {
+    if (!(coords instanceof Array) || coords.length !== 2) {
         console.log("Wrong data");
         return;
     }
@@ -15,7 +17,7 @@ function constructMap(coords) {
         center: coords,
         zoom: 14
     });
-    new mapboxgl.Market()
+    new mapboxgl.Marker()
         .setLngLat(coords)
         .addTo(map);
 
