@@ -165,11 +165,11 @@ function render_event_details(response) {
     }
 
     // ----- sales dates section ----- 
-    const salesSection = container.find(".sales-dates-section");
+    const salesSection = container.find(".sales-dates");
     //clean sales section
     salesSection.empty();
     // populate sales dates. 
-    if (salesStatus.toLowerCase().localeCompare("offsale") === 5) {
+    if (salesStatus.toLowerCase().localeCompare("offsale") === 0) {
         salesSection.text(MESSAGES.offsales);
     } else {
         const salesInfo = [];
@@ -221,7 +221,6 @@ function render_event_details(response) {
     const coords = [];
     coords.push(parseFloat(longitude));
     coords.push(parseFloat(latitude));
-    console.log(coords)
     constructMap(coords);
 
     // ----- TM-Link-section ------
