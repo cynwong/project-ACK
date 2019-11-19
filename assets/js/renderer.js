@@ -48,6 +48,7 @@ function render_events(response) {
         const startDate = moment(startDateTime);
 
         eventElement.attr("data-event-id", id);
+        eventElement.find(".show-details").attr("data-event-id",id)
         eventElement.find(".image img").attr({
             src: imageURL,
             alt: name
