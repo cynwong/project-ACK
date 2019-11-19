@@ -15,29 +15,30 @@ function render_events(response){
         //update each event information using event template. 
         const eventElement = $(".event.template").clone().removeClass("template");
         const {
-            classification,
             dates:{
                 start: {dateTime:startDateTime},
                 timezone
             },
             id,
             images,
-            info,
             name, 
-            url,
             } = event;
         const imageURL = getImageURL(images);
         const startDate = moment(startDateTime);
         eventElement.attr("data-event-id",id);
+        eventElement.find(".show-details").attr("data-event-id",id)
         eventElement.find(".image img").attr({
             src: imageURL,
             alt: name
         });
-        eventElement.find(".title a").text(name);
-        eventElement.find(".title a").attr("href", url);
-        eventElement.find(".content").text(info);
-        eventElement.find(".datetime time").text(startDate.format("DD MMM, YYYY hh:mm a")); 
-        eventElement.find(".timezone").text(timezone);
+        eventElement.find(".title").text(name);
+        eventElement.find(".datetime time").text(startDate.format("DD MMM, YYYY")); 
+
+        if(timezone){
+            eventElement.find(".timezone").text(", "+timezone.split("/")[1]);
+        }
+
+        
         elements.push(eventElement);
     }
     events_container.append(elements);
