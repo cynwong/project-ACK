@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css" />
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
     <link rel="stylesheet" href="assets/css/common.css" />
 
     <title>ACK Search App</title>
@@ -52,11 +53,28 @@
             <div class="field">
                 <label class="label">Event Keyword</label>
                 <div class="control">
-                    <input class="input is-info is-rounded" type="text" placeholder="Text input">
+                    <input class="input is-info is-rounded eventkeyword" type="text" placeholder="Text input">
                 </div>
             </div>
 
             <!-- //dropdown music , sports, arts,theatre& comedy, family&attartractions -->
+            <div class="field">
+                <div class="field">
+                    <label class="label">What sort of event is this ?</label>
+                </div>
+
+                <div class="control">
+                    <div class="select is-warning is-rounded">
+                        <select id="classification">
+                            <option value="none" selected hidden>Choose here</option>
+                            <option>Music</option>
+                            <option>Sports</option>
+                            <option>Arts, Theatre & Comedy</option>
+                            <option>Family & Attractions</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
             <div class="field">
                 <label class="label">City</label>
@@ -77,7 +95,8 @@
                     <button class="button is-link is-rounded is-hovered is-hovered submit">Search</button>
                 </div>
                 <div class="control">
-                    <button class="button is-link is-light is-rounded">Cancel</button>
+                    <!-- cancel -->
+                    <button class="button is-link is-light is-rounded cancel">Cancel</button>
                 </div>
             </div>
 
@@ -86,11 +105,9 @@
     </div>
 
     <!-- This is search result display page -->
-
-    <div id="events-container" class="columns is-full">
-
-        <!-- This is card template -->
-        <div class="card event template">
+    <!-- This is card template -->
+    <div class="column is-3 event template">
+        <div class="card">
             <div class="card-image">
                 <figure class="image">
                     <img>
@@ -98,59 +115,98 @@
             </div>
             <div class="card-content">
                 <div class="title">
-                    <a href="#"></a>
+                    <!-- <a href="#"></a> -->
                 </div>
                 <div class="content">
-                    
-                    
+
+
                 </div>
                 <div class="datetime">
-                    <time></time>
+                    <time></time> <span class="timezone"></span>
                 </div>
+                <div><a href="#" class="show-details">Learn More &gt;</a></div>
             </div>
+
         </div>
 
     </div>
 
+
+    <div id="events-container" class="columns is-multiline is-0"></div>
+
+
     <div id="event-details-container" class="columns">
-        <div class="column event-details is-10 is-offset-1" data-event-id="">
+        <div class="column event-details is-10 is-offset-1 template" data-event-id="">
             <section class="title-section">
-                <a class="official-link">
-                    <h3 class="title"></h3>
-                </a>
+                <h3 class="title"></h3>
             </section>
+            <section class="attraction-section"></section>
             <section class="image-section">
                 <figure>
                     <!-- event image -->
                     <img>
                 </figure>
             </section>
-            <section class="description-section">
+            <section class="classification-section">
                 <p>
-                    <!-- Event info -->
+                    <strong>Classification</strong>:
+                    <div class="classifications breadcrumb has-arrow-separator">
+
+                    </div>
                 </p>
+            </section>
+
+            <section class="description-section"></section>
+
+            <section class="sales-dates-section">
+                <p><strong>Ticket sales dates</strong>:</p>
+                <div class="sales-dates"></div>
+            </section>
+            <section class="event-dates-section">
+                <p><strong>Event</strong>:
+                    <time></time>
+                    ( <span class="timezone"></span> time )
+                </p>
+
             </section>
             <section class="venue-section">
                 <p class="venue">
-                    Venues:
+                    <strong>Venues</strong>:
                     <!-- <a>
                         name of the venue & venue url as a href.
                     </a> -->
                 </p>
+                <div class="venues-container"></div>
 
             </section>
+            <section class="map-section">
+                <div id="map-container"></div>
+            </section>
 
-
+            <section class="tm-link-section">
+                <p>
+                    See this event in
+                    <a class="official-link" target="_blank">
+                        Ticketmaster
+                    </a>
+                </p>
+            </section>
         </div>
+
     </div>
 
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.26/moment-timezone.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+
     <script src="./assets/js/api.js"></script>
-    <script src="./assets/js/api_settings.js"></script>
+    <script src="./assets/js/app_settings.js"></script>
     <script src="./assets/js/temp_event_response.js"></script>
-    <script src="./assets/js/render_event.js"></script>
+    <script src="./assets/js/map.js"></script>
+    <script src="./assets/js/renderer.js"></script>
 </body>
 
 </html>
