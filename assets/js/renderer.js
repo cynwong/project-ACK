@@ -104,7 +104,7 @@ function render_event_details(response) {
     container.attr("data-event-id", id);
 
     // ----- title section ----- 
-    container.find(".official-link .title").text(name);
+    container.find(".title").text(name);
     container.find(".official-link").attr({
         href: url,
         target: "_blank"
