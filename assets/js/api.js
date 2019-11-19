@@ -4,12 +4,11 @@ $(document).ready(function () {
         event.preventDefault();
         var name = $(".keyword").val().toLowerCase().trim();
         console.log(name);
-        var queryURL = "https://app.ticketmaster.com/discovery/v2/events.json?keyword=" + name + "&apikey=J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J"
+        var generalsearchURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&keyword=" + name + "&apikey=J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J"
         $.ajax({
-            url: queryURL,
+            url: generalsearchURL,
             method: "GET"
         }).then(function (response) {
-            // console.log(response);
             render_events(response);
         });
     });
@@ -18,33 +17,53 @@ $(document).ready(function () {
         event.preventDefault();
         var country = $(".country").val().toLowerCase().trim();
         var city = $(".city").val().toLowerCase().trim();
-        
+        var keyword = $(".eventkeyword").val().toLowerCase().trim();
+        var classification = $('#classification :selected').val().trim();
+        var countryCode = "";
         if (country !== "") {
-        var countryCode;      
-        var secondqueryURL = "https://restcountries.eu/rest/v2/name/" + country;
-        $.ajax({
-            url: secondqueryURL,
-            method: "GET"
-        }).then(function (response) {
-       
-            countryCode = response[0].alpha2Code;
-            console.log(countryCode);
-            var thirdqueryURL = "https://app.ticketmaster.com/discovery/v2/events.json?classificationName=arts,comedy&theatre&countryCode="+ countryCode +"&startDateTime=2019-11-16T14:00:00Z&endDateTime=2019-12-31T14:00:00Z&city=" + city + "&apikey=J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J"
+            var countryURL = "https://restcountries.eu/rest/v2/name/" + country;
             $.ajax({
-                url: thirdqueryURL,
+                url: countryURL,
+                method: "GET"
+            }).then(function (response) {
+                countryCode = response[0].alpha2Code;
+
+                var withCountryCodeURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&classificationName=" + classification + "&countryCode=" + countryCode + "&keyword=" + keyword + "&city=" + city + "&apikey=J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J"
+                $.ajax({
+                    url: withCountryCodeURL,
+                    method: "GET"
+                }).then(function (response) {
+
+                    render_events(response);
+                });
+            });
+        } else {
+            var withoutCountryCodeURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&classificationName=" + classification + "&keyword=" + keyword + "&city=" + city + "&apikey=J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J"
+            $.ajax({
+                url: withoutCountryCodeURL,
+                method: "GET"
+            }).then(function (response) {
+                render_events(response);
+            });
+        }
+    });
+
+    $("#events-container").on("click", ".show-details", function(){
+        var learnmore = $(this).attr("data-event-id");
+        var learnmoreURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=1&id=" + learnmore + "&apikey=J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J"
+            $.ajax({
+                url: learnmoreURL,
                 method: "GET"
             }).then(function (response) {
                 console.log(response);
             });
-
-        });
-        } else {
-            alert ("Please enter a country name!!!");
-            return;
-        }
-    
-     
-
-
     });
+
+    $(".cancel").on("click", function(){
+        $(".country").val("");
+        $(".city").val("");
+        $(".eventkeyword").val("");
+        $('#classification').val("Choose here");
+    });
+
 });
