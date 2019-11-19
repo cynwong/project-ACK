@@ -13,7 +13,8 @@ const MAP_KEY = 'pk.eyJ1Ijoicm9zeXRpZ2VyIiwiYSI6ImNrMzQ2dmdnMzB6bjQzY21vanMzcmZw
 
 
 const MESSAGES = {
-    offsales: "Ticket sales are now closed."
+    offsales: "Ticket sales are now closed.",
+    mapWrongDataType : "Wrong coords data type"
 }
 
 const DATE_FORMAT = "DD-MMM-YYYY";

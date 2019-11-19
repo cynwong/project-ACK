@@ -7,7 +7,7 @@
  */
 function constructMap(coords) {
     if (!(coords instanceof Array) || coords.length !== 2) {
-        console.log("Wrong coords data type");
+        console.log(MESSAGES.mapWrongDataType);
         return;
     }
     const map = new mapboxgl.Map({
