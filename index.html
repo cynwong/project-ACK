@@ -136,28 +136,47 @@
     <div id="event-details-container" class="columns">
         <div class="column event-details is-10 is-offset-1 template" data-event-id="">
             <section class="title-section">
-                <a class="official-link">
                     <h3 class="title"></h3>
+                <a class="official-link">
+                    Ticketmaster
                 </a>
             </section>
+            <section class="attraction-section"></section>
             <section class="image-section">
                 <figure>
                     <!-- event image -->
                     <img>
                 </figure>
             </section>
-            <section class="description-section">
+            <section class="classification-section">
                 <p>
-                    <!-- Event info -->
+                    <strong>Classification</strong>:
+                    <div class="classifications breadcrumb has-arrow-separator">
+
+                    </div>
                 </p>
+            </section>
+
+            <section class="description-section"></section>
+
+            <section class="sales-dates-section">
+                <p><strong>Ticket sales dates</strong>:</p>
+            </section>
+            <section class="event-dates-section">
+                <p><strong>Event</strong>:
+                    <time></time>
+                    ( <span class="timezone"></span> time )
+                </p>
+
             </section>
             <section class="venue-section">
                 <p class="venue">
-                    Venues:
+                    <strong>Venues</strong>:
                     <!-- <a>
                         name of the venue & venue url as a href.
                     </a> -->
                 </p>
+                <div class="venues-container"></div>
 
             </section>
             <section class="map-section">
@@ -174,12 +193,13 @@
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.26/moment-timezone.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
 
     <script src="./assets/js/api.js"></script>
     <script src="./assets/js/app_settings.js"></script>
     <script src="./assets/js/temp_event_response.js"></script>
     <script src="./assets/js/map.js"></script>
-    <script src="./assets/js/render_event.js"></script>
+    <script src="./assets/js/renderer.js"></script>
 </body>
 
 </html>
