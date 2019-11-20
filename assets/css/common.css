@@ -35,6 +35,9 @@ label {
     margin-right: 10px;
     margin-top: 30px;
     box-shadow: 6px 6px #888888;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
 }
 
 .template {
@@ -45,10 +48,25 @@ label {
     background-color: hsla(0deg,0%,96%,80%);
 }
 
-.template {
-    display:none;
-}
-
 #event-details-container{
     background-color: hsla(0deg,0%,96%,80%);
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+#card-size {
+    height: 420px;
+    box-sizing: border-box;
+
+}
+
+.pagination {
+    margin: 0 auto;
+    margin-bottom: 0;
+    position: fixed;
+    left: 340px;
+    bottom: 0;
 }
