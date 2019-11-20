@@ -65,18 +65,9 @@ function render_events(response) {
     events_container.append(elements);
 }
 
+let CURRENT_EVENT;
 
-
-
-
-
-/**
- * Render event detail page according to response object's data
- * @param {JSON object} response 
- */
-function render_event_details(response) {
-    const container = $(".event-details");
-
+function parseDetailsResponse(response){
     const {
         name,
         id,
@@ -85,8 +76,7 @@ function render_event_details(response) {
         sales,
         dates: {
             start: {
-                localDate,
-                localTime
+                dateTime
             },
             timezone,
             status: { code: salesStatus }
@@ -100,12 +90,79 @@ function render_event_details(response) {
         }
     } = response;
 
-    const imageURL = getImageURL(images);
+    CURRENT_EVENT = {
+        id,
+        name,
+        url, 
+        imageUrl: getImageURL(images),
+        sales: parseSalesData(sales),
+        dates:{
+            start: dateTime,
+            timezone,
+            status: salesStatus
+        },
+        classifications,
+        info,
+        pleaseNote,
+        venues: parseVenues(venues),
+        attractions: parseAttractions(attractions)
+    };
 
-    container.attr("data-event-id", id);
+
+    function parseSalesData(sales){
+        let salesDetails = [];
+        for(let [key,data] of Object.entries(sales)){
+            let s = {
+                name: key,
+                start: data.startDateTime,
+                end: data.endDateTime
+            }
+            salesDetails.push(s);
+        }
+        return salesDetails;
+    }
+
+    function parseVenues(data){
+        let venues = [];
+        for (let d of data) {
+            let v = {
+                name: d.name,
+                id: d.id,
+                url: d.url,
+                longitude: d.location.longitude,
+                latitude: d.location.latitude
+            };
+            venues.push(v);
+        }
+        return venues;
+    }
+
+    function parseAttractions(data){
+        let attractions = [];
+        for (let attraction of data) {
+            attractions.push({
+                name: attraction.name,
+                id: attraction.id,
+                url: attraction.url,
+            });
+        }
+        return attractions;
+    }
+}
+
+
+/**
+ * Render event detail page according to response object's data
+ * @param {JSON object} response 
+ */
+function render_event_details(response) {
+    const container = $(".event-details");
+    parseDetailsResponse(response);
+
+    container.attr("data-event-id", CURRENT_EVENT.id);
 
     // ----- title section ----- 
-    container.find(".title").text(name);
+    container.find(".title").text(CURRENT_EVENT.name);
 
     // ----- attraction section ----- 
     let attractionLinks = [];
@@ -113,7 +170,7 @@ function render_event_details(response) {
     //clean attraction Section first
     attractionSection.empty();
     //now populate the data
-    for (let attraction of attractions) {
+    for (let attraction of CURRENT_EVENT.attractions) {
         if (attractionLinks.length !== 0) {
             attractionLinks.push($("<span>").text(", "));
         }
@@ -128,8 +185,8 @@ function render_event_details(response) {
 
     // ----- image section ----- 
     container.find(".image-section img").attr({
-        src: imageURL,
-        alt: name
+        src: CURRENT_EVENT.imageURL,
+        alt: "Event Logo"
     });
 
     // ----- classification-section ----- 
@@ -137,7 +194,7 @@ function render_event_details(response) {
     //clean classification section
     classSection.empty();
     let classItems;
-    for (let c of classifications) {
+    for (let c of CURRENT_EVENT.classifications) {
         classItems = [];
         for (let content of Object.values(c)) {
             if (content instanceof Object && content.name.toLowerCase().localeCompare("undefined") !== 0) {
@@ -156,12 +213,12 @@ function render_event_details(response) {
     descriptionSection.empty();
     //insert data to description section
     descriptionSection.append(
-        $("<p>").addClass("info").text(info)
+        $("<p>").addClass("info").text(CURRENT_EVENT.info)
     )
 
-    if (pleaseNote) {
+    if (CURRENT_EVENT.pleaseNote) {
         descriptionSection.append(
-            $("<p>").addClass("please-note").text(pleaseNote)
+            $("<p>").addClass("please-note").text(CURRENT_EVENT.pleaseNote)
         );
     }
 
@@ -170,11 +227,11 @@ function render_event_details(response) {
     //clean sales section
     salesSection.empty();
     // populate sales dates. 
-    if (salesStatus.toLowerCase().localeCompare("offsale") === 0) {
+    if (CURRENT_EVENT.dates.status.toLowerCase().localeCompare("offsale") === 0) {
         salesSection.text(MESSAGES.offsales);
     } else {
         const salesInfo = [];
-        for (let [key, data] of Object.entries(sales)) {
+        for (let [key, data] of Object.entries(CURRENT_EVENT.sales)) {
             const p = $("<p>");
             const content = moment(data.startDateTime).format(DATE_FORMAT) +
                 " to " +
@@ -189,10 +246,10 @@ function render_event_details(response) {
 
     // ----- event dates section ----- 
 
-    const date = moment(`${localDate} ${localTime}`).format(`${DATE_FORMAT} ${TIME_FORMAT}`);
+    const date = moment(CURRENT_EVENT.dates.start).format(`${DATE_FORMAT} ${TIME_FORMAT}`);
 
     container.find(".event-dates-section time").text(date);
-    container.find(".event-dates-section .timezone").text(timezone);
+    container.find(".event-dates-section .timezone").text(CURRENT_EVENT.dates.timezone);
 
 
 
@@ -202,7 +259,7 @@ function render_event_details(response) {
     //clean venue container first
     venueContainer.empty();
     //populate the data. 
-    for (let v of venues) {
+    for (let v of CURRENT_EVENT.venues) {
         if (venueElements.length !== 0) {
             venueElements.push($("<span>").text(", "));
         }
@@ -217,8 +274,8 @@ function render_event_details(response) {
     venueContainer.append(venueElements);
 
     // ----- map section -----
-    const longitude = venues[0].location.longitude;
-    const latitude = venues[0].location.latitude;
+    const longitude = CURRENT_EVENT.venues[0].longitude;
+    const latitude = CURRENT_EVENT.venues[0].latitude;
     const coords = [];
     coords.push(parseFloat(longitude));
     coords.push(parseFloat(latitude));
@@ -226,7 +283,7 @@ function render_event_details(response) {
 
     // ----- TM-Link-section ------
     container.find(".official-link").attr({
-        href: url,
+        href: CURRENT_EVENT.url,
     });
 
     //now display the container. 
