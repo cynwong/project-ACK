@@ -1,10 +1,9 @@
 $(document).ready(function () {
-    const apikey = "&apikey=J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J";
     $(".searchbykeyword").on("click", function (event) {
         event.preventDefault();
         var name = $(".keyword").val().toLowerCase().trim();
         console.log(name);
-        var generalsearchURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&keyword=" + name + apikey;
+        var generalsearchURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&keyword=" + name + TM_SETTTINGS.apikey;
         $.ajax({
             url: generalsearchURL,
             method: "GET",
@@ -28,7 +27,7 @@ $(document).ready(function () {
             }).then(function (response) {
                 countryCode = response[0].alpha2Code;
 
-                var withCountryCodeURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&classificationName=" + classification + "&countryCode=" + countryCode + "&keyword=" + keyword + "&city=" + city + apikey;
+                var withCountryCodeURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&classificationName=" + classification + "&countryCode=" + countryCode + "&keyword=" + keyword + "&city=" + city + TM_SETTTINGS.apikey;
                 $.ajax({
                     url: withCountryCodeURL,
                     method: "GET"
@@ -38,7 +37,7 @@ $(document).ready(function () {
                 });
             });
         } else {
-            var withoutCountryCodeURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&classificationName=" + classification + "&keyword=" + keyword + "&city=" + city + apikey;
+            var withoutCountryCodeURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&classificationName=" + classification + "&keyword=" + keyword + "&city=" + city + TM_SETTTINGS.apikey;
             $.ajax({
                 url: withoutCountryCodeURL,
                 method: "GET"
@@ -50,7 +49,7 @@ $(document).ready(function () {
 
     $("#events-container").on("click", ".show-details", function(){
         var learnmore = $(this).attr("data-event-id");
-        var learnmoreURL = "https://app.ticketmaster.com/discovery/v2/events/" + learnmore + ".json?" + apikey;
+        var learnmoreURL = "https://app.ticketmaster.com/discovery/v2/events/" + learnmore + ".json?" + aTM_SETTTINGS.apikey;
             $.ajax({
                 url: learnmoreURL,
                 method: "GET"
