@@ -15,12 +15,10 @@ label {
     font-size: 24px;
 
 }
+    
 #form {
     margin-top: 100px;
     margin-right: 100px;
-}  
-
-#form {
     border: 1px;
     border-style: solid;
     border-color: black;
@@ -48,9 +46,6 @@ label {
     background-color: hsla(0deg,0%,96%,80%);
 }
 
-#event-details-container{
-    background-color: hsla(0deg,0%,96%,80%);
-}
 
 .title {
     font-size: 1.5rem;
@@ -63,10 +58,10 @@ label {
 
 }
 
-.pagination {
-    margin: 0 auto;
-    margin-bottom: 0;
-    position: fixed;
-    left: 340px;
-    bottom: 0;
+#map-container {
+    width: 400px;
+    height: 300px;
+    border-radius: 3px;
+    border: 1px solid #222222;
 }
+
