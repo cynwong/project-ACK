@@ -42,7 +42,7 @@ label {
 }
 
 #event-details-container{
-    background-color: hsla(0deg,0%,96%,80%);
+    background-color: hsl(0deg,0%,96%);
 }
 
 #map-container {
@@ -52,3 +52,6 @@ label {
     border: 1px solid #222222;
 }
 
+.toggle-favourite.saved{
+    filter: invert(100%);
+}
