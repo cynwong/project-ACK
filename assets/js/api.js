@@ -65,7 +65,7 @@ $(document).ready(function () {
 
     $("#events-container").on("click", ".show-details", function(){
         var learnmore = $(this).attr("data-event-id");
-        var learnmoreURL = "https://app.ticketmaster.com/discovery/v2/events/" + learnmore + ".json?" + "&apikey=" + aTM_SETTTINGS.apikey;
+        var learnmoreURL = "https://app.ticketmaster.com/discovery/v2/events/" + learnmore + ".json?" + "&apikey=" + TM_SETTTINGS.apikey;
             $.ajax({
                 url: learnmoreURL,
                 method: "GET"
