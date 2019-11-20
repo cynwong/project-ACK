@@ -185,7 +185,7 @@ function render_event_details(response) {
 
     // ----- image section ----- 
     container.find(".image-section img").attr({
-        src: CURRENT_EVENT.imageURL,
+        src: CURRENT_EVENT.imageUrl,
         alt: "Event Logo"
     });
 
@@ -231,12 +231,12 @@ function render_event_details(response) {
         salesSection.text(MESSAGES.offsales);
     } else {
         const salesInfo = [];
-        for (let [key, data] of Object.entries(CURRENT_EVENT.sales)) {
+        for (let sale of CURRENT_EVENT.sales) {
             const p = $("<p>");
-            const content = moment(data.startDateTime).format(DATE_FORMAT) +
+            const content = moment(sale.startDateTime).format(DATE_FORMAT) +
                 " to " +
-                moment(data.EndDateTime).format(DATE_FORMAT);
-            const header = $("<strong>").text(key.charAt(0).toUpperCase() + key.substring(1));
+                moment(sale.EndDateTime).format(DATE_FORMAT);
+            const header = $("<strong>").text(sale.name.charAt(0).toUpperCase() + sale.name.substring(1));
             p.text(`: ${content}`);
             p.prepend(header);
             salesInfo.push(p);
@@ -249,7 +249,7 @@ function render_event_details(response) {
     const date = moment(CURRENT_EVENT.dates.start).format(`${DATE_FORMAT} ${TIME_FORMAT}`);
 
     container.find(".event-dates-section time").text(date);
-    container.find(".event-dates-section .timezone").text(CURRENT_EVENT.dates.timezone);
+    container.find(".event-dates-section .timezone").text(CURRENT_EVENT.dates.timezone.split("/")[1]);
 
 
 
@@ -287,5 +287,6 @@ function render_event_details(response) {
     });
 
     //now display the container. 
+    container.closest(".modal").addClass("is-active");
     container.show();
 }
