@@ -15,12 +15,10 @@ label {
     font-size: 24px;
 
 }
+    
 #form {
     margin-top: 100px;
     margin-right: 100px;
-}  
-
-#form {
     border: 1px;
     border-style: solid;
     border-color: black;
@@ -35,6 +33,9 @@ label {
     margin-right: 10px;
     margin-top: 30px;
     box-shadow: 6px 6px #888888;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
 }
 
 .template {
@@ -43,6 +44,18 @@ label {
 
 #event-details-container{
     background-color: hsl(0deg,0%,96%);
+}
+
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+#card-size {
+    height: 420px;
+    box-sizing: border-box;
+
 }
 
 #map-container {

@@ -1,15 +1,31 @@
 $(document).ready(function () {
-    $(".searchbykeyword").on("click", function (event) {
-        event.preventDefault();
+    const searchByKeyword = function() {
         var name = $(".keyword").val().toLowerCase().trim();
         console.log(name);
-        var generalsearchURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&keyword=" + name + TM_SETTTINGS.apikey;
+        var queryURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&keyword=" + name + "&apikey=" + TM_SETTTINGS.apikey;
         $.ajax({
-            url: generalsearchURL,
-            method: "GET",
+            url: queryURL,
+            method: "GET"
         }).then(function (response) {
+            // console.log(response);
             render_events(response);
         });
+    }
+
+    //assign an event handler to Search button for quick search
+    $(".searchbykeyword").on('click', function (event) {
+        event.preventDefault();
+        searchByKeyword();
+    });
+
+    // assign an event handler to Enter button for direct quick search from text input
+    
+    $("#inputText").on('keypress', function (event) {
+        if (event.keyCode === 13 ) {
+            event.preventDefault();
+            searchByKeyword();
+        }
+
     });
 
     $(".submit").on("click", function (event) {

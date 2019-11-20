@@ -7,7 +7,7 @@ const TM_SETTTINGS = {
         width: 640,
         height: 360
     },
-    apikey: "&apikey=J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J",
+    apikey: "J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J",
 };
 
 // for Mapbox
