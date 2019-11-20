@@ -6,7 +6,7 @@ const TM_SETTTINGS = {
         width: 640,
         height: 360
     },
-    apikey: "&apikey=J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J",
+    apikey: "J1LIFHjLvkNEcD4gPnYHGcQNfXstsT5J",
 };
 
 const MAP_KEY = 'pk.eyJ1Ijoicm9zeXRpZ2VyIiwiYSI6ImNrMzQ2dmdnMzB6bjQzY21vanMzcmZwN2gifQ.SmS1JTHUQKYr_roaQIAMFQ';
