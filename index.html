@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css" />
-    <link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
     <link rel="stylesheet" href="assets/css/common.css" />
 
     <title>ACK Search App</title>
@@ -27,7 +26,7 @@
         <div class="level-item">
             <div class="field has-addons">
                 <p class="control">
-                    <input class="input keyword" type="text" placeholder="Find an event">
+                    <input class="input keyword" type="text" placeholder="Find an event" id="inputText">
                 </p>
                 <p class="control">
                     <button class="button searchbykeyword">
@@ -105,7 +104,8 @@
 
     <!-- This is search result display page -->
     <!-- This is card template -->
-    <div class="column is-3 event template">
+
+    <div class="column is-3 event template" id="card-size">
         <div class="card">
             <div class="card-image">
                 <figure class="image">
@@ -137,75 +137,48 @@
     <div id="event-details-container" class="columns">
         <div class="column event-details is-10 is-offset-1 template" data-event-id="">
             <section class="title-section">
-                <h3 class="title"></h3>
+                <a class="official-link">
+                    <h3 class="title"></h3>
+                </a>
             </section>
-            <section class="attraction-section"></section>
             <section class="image-section">
                 <figure>
                     <!-- event image -->
                     <img>
                 </figure>
             </section>
-            <section class="classification-section">
+            <section class="description-section">
                 <p>
-                    <strong>Classification</strong>:
-                    <div class="classifications breadcrumb has-arrow-separator">
-
-                    </div>
+                    <!-- Event info -->
                 </p>
-            </section>
-
-            <section class="description-section"></section>
-
-            <section class="sales-dates-section">
-                <p><strong>Ticket sales dates</strong>:</p>
-                <div class="sales-dates"></div>
-            </section>
-            <section class="event-dates-section">
-                <p><strong>Event</strong>:
-                    <time></time>
-                    ( <span class="timezone"></span> time )
-                </p>
-
             </section>
             <section class="venue-section">
                 <p class="venue">
-                    <strong>Venues</strong>:
+                    Venues:
                     <!-- <a>
                         name of the venue & venue url as a href.
                     </a> -->
                 </p>
-                <div class="venues-container"></div>
 
             </section>
-            <section class="map-section">
-                <div id="map-container"></div>
-            </section>
 
-            <section class="tm-link-section">
-                <p>
-                    See this event in
-                    <a class="official-link" target="_blank">
-                        Ticketmaster
-                    </a>
-                </p>
-            </section>
+
         </div>
 
     </div>
+
+
 
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.26/moment-timezone.min.js"></script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
 
     <script src="./assets/js/api.js"></script>
-    <script src="./assets/js/app_settings.js"></script>
+    <script src="./assets/js/api_settings.js"></script>
     <script src="./assets/js/temp_event_response.js"></script>
-    <script src="./assets/js/map.js"></script>
-    <script src="./assets/js/renderer.js"></script>
+    <script src="./assets/js/render_event.js"></script>
 </body>
 
 </html>
