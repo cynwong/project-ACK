@@ -66,9 +66,7 @@ label {
     flex-direction: row;
     justify-content: space-between;
 }
-.toggle-favourite.saved{
-    filter: invert(100%);
-}
+
 #map-container {
     width: 400px;
     height: 300px;
