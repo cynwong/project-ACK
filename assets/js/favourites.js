@@ -14,7 +14,7 @@ const STORAGE = new StorageHandler(STORAGE_KEY, FAVOURITES);
 let TIMER_ID;
 
 function populateFavourites() {
-    const container = $(".favouites-container");
+    const container = $(".favourites-container");
     const elements = [];
     const today = moment();
     const length = FAVOURITES.length;
@@ -26,7 +26,7 @@ function populateFavourites() {
         const favElement = $(".favourite.template").clone().removeClass("template");
         const favDate = moment(favourite.dates.start);
 
-        favElement.attr("data-id", favourite.id);
+        favElement.attr("id", favourite.id);
         favElement.attr("data-index", i);
         favElement.find(".title").text(favourite.name);
         if (favDate.isSameOrBefore(today)) {
@@ -39,20 +39,26 @@ function populateFavourites() {
                 const hoursLeft = favDate.diff(today, "hours") - (daysLeft * 24);
                 const minutesLeft = favDate.diff(today, "minutes") - (hoursLeft * 60) - (daysLeft * 24 * 60);
                 const secondsLeft = favDate.diff(today, "seconds") - (minutesLeft * 60) - (hoursLeft * 60 * 60) - (daysLeft * 24 * 60 * 60);
-
+                const title = pinned.find(".event-title");
                 //update pinned section
                 pinned.find(".days").text(daysLeft).data("days", daysLeft);
                 pinned.find(".hours").text(hoursLeft).data("hours", hoursLeft);
                 pinned.find(".minutes").text(minutesLeft).data("minutes", minutesLeft);
                 pinned.find(".seconds").text(secondsLeft).data("seconds", secondsLeft);
-                pinned.find(".event-title").text(favourite.name);
+
+                title.attr("data-index", i);
+                title.attr("id", favourite.id);
+                title.text(favourite.name);
                 daysLeftToNext = daysLeft;
+                if(TIMER_ID){
+                    //clear previous timer. 
+                    clearInterval(TIMER_ID);
+                }
                 //start the timer
                 TIMER_ID = setInterval(() => {
                     const pinned = $(".pinned-container");
                     const secondsElement = pinned.find(".seconds");
                     let seconds = parseInt(secondsElement.data("seconds"));
-                    console.log(seconds)
                     if (seconds === 0) {
                         const minutesElement = pinned.find(".minutes");
                         let minutes = parseInt(minutesElement.data("minutes"));
@@ -83,7 +89,7 @@ function populateFavourites() {
                         seconds = 60;
                         //update minutes element
                         minutesElement.text(minutes);
-                        minutesElement.data("minutes",minutes);
+                        minutesElement.data("minutes", minutes);
                     }
                     //reduce seconds by one
                     seconds--;
@@ -99,29 +105,79 @@ function populateFavourites() {
 
         elements.push(favElement);
     }
-
+    //add favourites to the container for display
     container.append(elements);
 
+    showFavourites();
+    
+}
+
+function hideFavourites(){
+    const favContainer = $(".favourites-wrapper");
+    //show no favourite message
+    favContainer.find("#no-favourites").show();
+
+    //hide everything else
+    favContainer.find(".pinned-container").hide();
+    favContainer.find(".favourites-container").hide();
 
 }
 
+function showFavourites(){
+    const favContainer = $(".favourites-wrapper");
+    //hide no favourite message
+    favContainer.find("#no-favourites").hide();
+
+    //show everything else
+    favContainer.find(".pinned-container").show();
+    favContainer.find(".favourites-container").show();
+
+}
+/**
+ * Set current event by index in FAVOURITES
+ *  and render the details page for user display
+ * @param {number} index 
+ */
+function resetCurrentEvent(index) {
+    //reset CURRENT_EVENT
+    CURRENT_EVENT = FAVOURITES[index];
+
+    render_event_details();
+}
 $(document).ready(function () {
     FAVOURITES = STORAGE.data;
+    if (FAVOURITES.length !== 0) {
+        populateFavourites();
+    }else{
+        hideFavourites();
+    }
 
+
+
+    // ======== Event Listerners for Favourites =======
+
+    $(".pinned-container .event-title").click(event => {
+        event.preventDefault();
+        resetCurrentEvent($(".pinned-container .event-title").data("index"));
+    })
+    $(".favourites-container").on("click", ".favourite .title", function (event) {
+        event.preventDefault();
+        resetCurrentEvent($(this).closest(".favourite").data("index"));
+    });
 
     $("#event-details-container").on("click", "button.toggle-favourite", function () {
-        const target = $(this);
+        const id = $("#event-details-container").attr("data-event-id");
+        const index = FAVOURITES.findIndex(favourite => favourite.id === id);
 
-        if (target.hasClass("saved")) {
-            // delete the current event 
-            target.removeClass("saved");
-            const id = target.closest(".event-details").data("eventid");
-            const index = FAVOURITES.findIndex(event => event.id === id);
-
+        if (index !== -1) {
+            // event in favourites 
+            // so delete the current event 
+            $(this).removeClass("is-inverted");
             FAVOURITES.splice(index, 1);
         } else {
+            // not in Favourites list
             //add this event to favourite
-            target.addClass("saved");
+            $(this).addClass("is-inverted");
             const newFavourite = {
                 attractions: CURRENT_EVENT.attractions,
                 classifications: CURRENT_EVENT.classifications,
@@ -136,20 +192,28 @@ $(document).ready(function () {
                 venues: CURRENT_EVENT.venues
             };
             FAVOURITES.push(newFavourite);
-            FAVOURITES.sort(fav1, fav2 => {
-                const date1 = moment(fav1.dates.start);
-                const date2 = moment(fav2.dates.start);
+            if (FAVOURITES.length >= 2) {
+                FAVOURITES.sort((fav1, fav2) => {
+                    const date1 = moment(fav1.dates.start);
+                    const date2 = moment(fav2.dates.start);
 
-                if (date1.isBefore(date2) === true) {
-                    return -1;
-                } else if (date1.isSame(date2) === true) {
-                    return 0;
-                } else if (date1.isAfter(date2) === true) {
-                    return 1;
-                }
-            });
+                    if (date1.isBefore(date2) === true) {
+                        return -1;
+                    } else if (date1.isSame(date2) === true) {
+                        return 0;
+                    } else if (date1.isAfter(date2) === true) {
+                        return 1;
+                    }
+                });
+            }
         }
         STORAGE.data = FAVOURITES;
+        if (FAVOURITES.length === 0) {
+            clearInterval(TIMER_ID);
+            hideFavourites();
+        } else {
+            populateFavourites();
+        }
     });
 
     $(".modal-close").click(function () {
