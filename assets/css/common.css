@@ -76,6 +76,6 @@ label {
     border: 1px solid #222222;
 }
 
-#events-container, .modal{
+#events-container{
     margin-bottom: 80px;
 }
