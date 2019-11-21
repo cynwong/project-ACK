@@ -38,22 +38,54 @@
     <!-- This is body with Search form -->
     <!-- This is main container -->
     <div class="columns">
-        <div class="favourite level template">
-            <div class="level-left">
-                <div class="level-item"><strong></strong></div>
-            </div>
-            <div class="level-right">
-                <div class="level-item">
-                    <div><span class="day"></span> days</div>
+        <div class=" column is-half-tablet is-two-fifths-desktop favourites-wrapper">
+            <div class="favourite level template">
+                <div class="level-left">
+                    <div class="level-item"><a href="#" class="title"></a></div>
                 </div>
-                left
+                <div class="level-right">
+                    <div class="level-item">
+                        <span class="days"></span>&nbsp;days left
+                    </div>
+                    
+                </div>
             </div>
-        </div>
-        <div class="column favouites-container">
+            <div class="column pinned-container">
+                <div class="label">Time Left</div>
+                <div class="level is-mobile">
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Days</p>
+                            <p class="title days"></p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Hours</p>
+                            <p class="title hours"></p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Minutes</p>
+                            <p class="title minutes"></p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Seconds</p>
+                            <p class="title seconds"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="label">Until</div>
+                <div class="event-title"></div>
 
+            </div>
+            <div class="column favouites-container"></div>
         </div>
         <!-- Container of Search box -->
-        <div class="column is-half is-offset-5" id="form">
+        <div class="column is-half-tablet is-two-fifths-desktop is-offset-1" id="search-form">
 
             <div class="field">
                 <label class="label">Event Keyword</label>
