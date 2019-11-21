@@ -98,7 +98,6 @@ function parseDetailsResponse(response){
         sales: parseSalesData(sales),
         dates:{
             start: dateTime,
-            timezone:timezone.split("/")[1].replace("_"," "),
             status: salesStatus
         },
         classifications,
@@ -107,6 +106,11 @@ function parseDetailsResponse(response){
         venues: parseVenues(venues),
         attractions: parseAttractions(attractions)
     };
+    if(timezone){
+        CURRENT_EVENT.timezone = timezone.split("/")[1].replace("_"," ");
+    }else {
+        CURRENT_EVENT.timezone = "";
+    }
 
 
     function parseSalesData(sales){
@@ -165,9 +169,9 @@ function render_event_details() {
     // ----- title section ----- 
     container.find(".title").text(CURRENT_EVENT.name);
     if(typeof FAVOURITES.find( fav => fav.id === id) === "undefined"){
-        container.find("button.toggle-favourite").removeClass("saved");
+        container.find("button.toggle-favourite").removeClass("is-inverted");
     }else {
-        container.find("button.toggle-favourite").addClass("saved")
+        container.find("button.toggle-favourite").addClass("is-inverted")
     }
 
     // ----- attraction section ----- 
