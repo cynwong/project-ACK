@@ -39,7 +39,8 @@
     <!-- This is main container -->
     <div class="columns">
         <div class=" column is-half-tablet is-two-fifths-desktop favourites-wrapper">
-            <div class="favourite level template">
+            <div id="no-favourites" class="message">No Favourite Event</div>
+            <div class="favourite level template" id="" data-index="">
                 <div class="level-left">
                     <div class="level-item"><a href="#" class="title"></a></div>
                 </div>
@@ -50,7 +51,7 @@
                     
                 </div>
             </div>
-            <div class="column pinned-container">
+            <div class="column pinned-container ">
                 <div class="label">Time Left</div>
                 <div class="level is-mobile">
                     <div class="level-item has-text-centered">
@@ -79,10 +80,10 @@
                     </div>
                 </div>
                 <div class="label">Until</div>
-                <div class="event-title"></div>
+                <div class="event-title" data-index="" id=""></div>
 
             </div>
-            <div class="column favouites-container"></div>
+            <div class="column favourites-container"></div>
         </div>
         <!-- Container of Search box -->
         <div class="column is-half-tablet is-two-fifths-desktop is-offset-1" id="search-form">
@@ -170,7 +171,7 @@
 
             <header class=" modal-card-head title-section">
                 <h3 class="title"></h3>
-                <button class="toggle-favourite">&hearts; Favourite</button>
+                <button class="toggle-favourite button is-warning is-rounded">&hearts; Favourite</button>
                 <button class="modal-close is-large"></button>
             </header>
             <section class="modal-card-body">
