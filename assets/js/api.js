@@ -1,15 +1,11 @@
 $(document).ready(function () {
     const searchByKeyword = function() {
         var name = $(".keyword").val().toLowerCase().trim();
-        console.log(name);
         var queryURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&keyword=" + name + "&apikey=" + TM_SETTTINGS.apikey;
         $.ajax({
             url: queryURL,
             method: "GET"
-        }).then(function (response) {
-            // console.log(response);
-            render_events(response);
-        });
+        }).then(render_events);
     }
 
     //assign an event handler to Search button for quick search
@@ -47,19 +43,14 @@ $(document).ready(function () {
                 $.ajax({
                     url: withCountryCodeURL,
                     method: "GET"
-                }).then(function (response) {
-                    console.log(response);
-                    render_events(response);
-                });
+                }).then(render_events);
             });
         } else {
             var withoutCountryCodeURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&classificationName=" + classification + "&keyword=" + keyword + "&city=" + city + "&apikey=" + TM_SETTTINGS.apikey;
             $.ajax({
                 url: withoutCountryCodeURL,
                 method: "GET"
-            }).then(function (response) {
-                render_events(response);
-            });
+            }).then(render_events);
         }
     });
 
@@ -70,8 +61,8 @@ $(document).ready(function () {
                 url: learnmoreURL,
                 method: "GET"
             }).then(function (response) {
-                console.log(response);
-                render_event_details(response);
+                parseDetailsResponse(response);
+                render_event_details();
             });
     });
 
