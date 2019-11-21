@@ -98,7 +98,7 @@ function parseDetailsResponse(response){
         sales: parseSalesData(sales),
         dates:{
             start: dateTime,
-            timezone,
+            timezone:timezone.split("/")[1].replace("_"," "),
             status: salesStatus
         },
         classifications,
@@ -152,17 +152,23 @@ function parseDetailsResponse(response){
 
 
 /**
- * Render event detail page according to response object's data
- * @param {JSON object} response 
+ * Render event detail page by using CURRENT_EVENT
+ * 
  */
-function render_event_details(response) {
+function render_event_details() {
     const container = $(".event-details");
-    parseDetailsResponse(response);
+    const id = CURRENT_EVENT.id;
 
-    container.attr("data-event-id", CURRENT_EVENT.id);
+
+    container.attr("data-event-id", id);
 
     // ----- title section ----- 
     container.find(".title").text(CURRENT_EVENT.name);
+    if(typeof FAVOURITES.find( fav => fav.id === id) === "undefined"){
+        container.find("button.toggle-favourite").removeClass("saved");
+    }else {
+        container.find("button.toggle-favourite").addClass("saved")
+    }
 
     // ----- attraction section ----- 
     let attractionLinks = [];
@@ -249,7 +255,12 @@ function render_event_details(response) {
     const date = moment(CURRENT_EVENT.dates.start).format(`${DATE_FORMAT} ${TIME_FORMAT}`);
 
     container.find(".event-dates-section time").text(date);
-    container.find(".event-dates-section .timezone").text(CURRENT_EVENT.dates.timezone.split("/")[1]);
+    const timezone= CURRENT_EVENT.dates.timezone;
+    if(timezone){
+        container.find(".event-dates-section .timezone").text(timezone);
+    }else {
+        container.find(".event-dates-section .timezone-container").hide();
+    }
 
 
 
