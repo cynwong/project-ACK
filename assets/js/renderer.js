@@ -36,11 +36,14 @@ const hideErrors = function () {
  */
 const getImageURL = function (imgArray) {
     const image_settings = TM_SETTTINGS.image;
-    return imgArray.filter(
-        img => img.ratio.localeCompare(image_settings.ratio) === 0 &&
-            img.width === image_settings.width &&
-            img.height === image_settings.height
-    )[0].url;
+    if(imgArray instanceof Array){
+        return imgArray.filter(
+            img => img.ratio && img.ratio.localeCompare(image_settings.ratio) === 0 &&
+                img.width === image_settings.width &&
+                img.height === image_settings.height
+        )[0].url;
+    }
+    return ""; //default
 };
 
 /**
@@ -101,7 +104,11 @@ const render_events = function (response) {
             name,
         } = event;
         const imageURL = getImageURL(images);
-        const startDate = moment(startDateTime);
+        if(startDateTime){
+            const startDate = moment(startDateTime);
+        }else{
+            const startDate = "";
+        }
 
         eventElement.attr("data-event-id", id);
         eventElement.find(".show-details").attr("data-event-id", id)
@@ -113,7 +120,7 @@ const render_events = function (response) {
         eventElement.find(".datetime time").text(startDate.format("DD MMM, YYYY"));
 
         if (timezone) {
-            eventElement.find(".timezone").text(", " + timezone.split("/")[1].replace("_"," "));
+            eventElement.find(".timezone").text(", " + timezone.split("/")[1].replace("_", " "));
         }
 
         elements.push(eventElement);
@@ -125,8 +132,6 @@ const render_events = function (response) {
     //clean up the forms
     cleanForms();
 };
-
-
 
 
 /**
@@ -178,9 +183,9 @@ const parseDetailsResponse = function (response) {
                     id: d.id,
                     url: d.url,
                 };
-                if(d.location){
+                if (d.location) {
                     venue.longitude = d.location.longitude;
-                    venue.latitude= d.location.latitude;
+                    venue.latitude = d.location.latitude;
                 }
                 venues.push(venue);
             }
@@ -345,7 +350,7 @@ const render_event_details = function () {
     venueContainer.empty();
     //populate the data. 
     for (let v of CURRENT_EVENT.venues) {
-        if(v.name){
+        if (v.name) {
             //only add new venue element if there is a name. 
             if (venueElements.length !== 0) {
                 venueElements.push($("<span>").text(", "));
@@ -358,15 +363,15 @@ const render_event_details = function () {
             }));
         }
     }
-    if(venueElements.length === 0){
+    if (venueElements.length === 0) {
         $(".venue-section").hide();
-    }else{
+    } else {
         venueContainer.append(venueElements);
         $(".venue-section").show();
     }
 
     // ----- map section -----
-    if(CURRENT_EVENT.venues[0].longitude){
+    if (CURRENT_EVENT.venues[0].longitude) {
         // only add map if coordinates are known. 
         const longitude = CURRENT_EVENT.venues[0].longitude;
         const latitude = CURRENT_EVENT.venues[0].latitude;
@@ -375,7 +380,7 @@ const render_event_details = function () {
         coords.push(parseFloat(latitude));
         constructMap(coords);
         $(".map-section").show();
-    }else{
+    } else {
         $(".map-section").hide();
     }
 
