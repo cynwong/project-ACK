@@ -17,15 +17,41 @@ const MAP_KEY = 'pk.eyJ1Ijoicm9zeXRpZ2VyIiwiYSI6ImNrMzQ2dmdnMzB6bjQzY21vanMzcmZw
 // Messages for the user.
 const MESSAGES = {
     offsales: "Ticket sales are now closed.",
-    mapWrongDataType : "Wrong coords data type"
+    mapWrongDataType : "Wrong coords data type",
+    noResultAdvancedFormError: "given criteria",
+    noResultSearchBoxErrorSuffix: "keyword"
 }
 
-// date time format
+/**
+ * date time format
+ * @type string
+ */
 const DATE_FORMAT = "DD-MMM-YYYY";
 const TIME_FORMAT = "hh:mmA";
 
-// for local storage
+/**
+ * key for local storage
+ * @type string
+ */ 
 const STORAGE_KEY = "favourites";
 
-// currently viewed event
+/**
+ * currently viewed event
+ * @type object
+ */ 
 let CURRENT_EVENT;
+
+
+/**
+ * @type object[]
+ */
+let FAVOURITES = [];
+
+/**
+ * @type StorageHandler 
+ */
+const STORAGE = new StorageHandler(STORAGE_KEY, FAVOURITES);
+/**
+ * @type intervalID
+ */
+let TIMER_ID;
