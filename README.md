@@ -23,6 +23,18 @@ Searchy is a single-page web application which allows users to search the desire
 
 > As a user, I can search for concerts by some keywords so I know what will be happening soon.
 
+## Technologies used
+    
+    * HTML, HTML5
+    * CSS & Bulma Framework
+    * Javascript, jQuery, moment.js
+    * JSON
+    * GitHub
+    * Ticketmaster API
+    * Mapbox
+    * Agile Methodologies
+    * Trello
+
 ## Instructions / how-tos
 
 ### Using general search
