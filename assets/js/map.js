@@ -5,7 +5,7 @@
  * @param {number[]} coords format [longitude, latitude]
  * 
  */
-function constructMap(coords) {
+const constructMap = function (coords) {
     // check if coords are in correct form
     if (!(coords instanceof Array) || coords.length !== 2) {
         console.log(MESSAGES.mapWrongDataType);
@@ -20,7 +20,7 @@ function constructMap(coords) {
         center: coords,
         zoom: 14
     });
-    
+
     //create and add a marker at the coordinates. 
     new mapboxgl.Marker()
         .setLngLat(coords)
