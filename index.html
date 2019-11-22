@@ -20,7 +20,7 @@
                 <label width="112" height="28">ACK</label>
             </a>
         </div>
-        <div class="level-item">
+        <div id="keyword-search" class="level-item">
             <div class="field has-addons">
                 <p class="control">
                     <input class="input keyword" type="text" placeholder="Find an event" id="inputText">
@@ -39,6 +39,12 @@
     <div id="no-keyword-error" class="notification is-warning template error-message">
         <button class="delete"></button>
         Pleaes give a keyword to search.
+    </div>
+
+    <!-- no search keyword error message -->
+    <div id="no-results-error" class="notification is-warning template error-message">
+        <button class="delete"></button>
+        Cannot find any event with keyword "<span class="keyword"></span>".
     </div>
 
     <!-- fail error message -->
