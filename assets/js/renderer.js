@@ -113,7 +113,7 @@ const render_events = function (response) {
         eventElement.find(".datetime time").text(startDate.format("DD MMM, YYYY"));
 
         if (timezone) {
-            eventElement.find(".timezone").text(", " + timezone.split("/")[1]);
+            eventElement.find(".timezone").text(", " + timezone.split("/")[1].replace("_"," "));
         }
 
         elements.push(eventElement);
