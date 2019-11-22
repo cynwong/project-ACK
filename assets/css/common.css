@@ -123,6 +123,10 @@ label {
 }
 
 
+.error-message{
+    margin-top:3rem;
+}
+
 @media screen and (max-width:769px){
     .favourites-wrapper, #search-form{
         margin: 0.5rem;
