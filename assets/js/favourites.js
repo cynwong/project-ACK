@@ -166,7 +166,7 @@ $(document).ready(function () {
     });
 
     $("#event-details-container").on("click", "button.toggle-favourite", function () {
-        const id = $("#event-details-container").attr("data-event-id");
+        const id = $(".event-details").attr("data-event-id");
         const index = FAVOURITES.findIndex(favourite => favourite.id === id);
 
         if (index !== -1) {
