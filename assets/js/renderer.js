@@ -1,4 +1,28 @@
 /**
+ * Hide both data and error containers.
+ */
+const hideAll= function(){
+    hideDataContainers();
+    hideErrors();
+}
+
+/**
+ * Hide the information containers 
+ */
+const hideDataContainers = function () {
+    $(".events-container").hide();
+    $("#details-container").removeClass("is-active");
+}
+
+/**
+ * hide all error messages
+ */
+const hideErrors = function(){
+    //hide all error messages
+    $(".error-message").hide();
+}
+
+/**
  * find the image according to API settings. 
  * @param {object[]} imgArray 
  */

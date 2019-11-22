@@ -1,13 +1,5 @@
 
 /**
- * Hide the information containers 
- */
-const hideDataContainers = function () {
-    $(".events-container").hide();
-    $("#details-container").removeClass("is-active");
-}
-
-/**
  * Display API fail error message to user and write out detail error object in console.
  * @param {object} error - error response object
  */
