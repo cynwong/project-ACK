@@ -36,12 +36,15 @@ const hideErrors = function () {
  */
 const getImageURL = function (imgArray) {
     const image_settings = TM_SETTTINGS.image;
-    if(imgArray instanceof Array){
-        return imgArray.filter(
+    if (imgArray instanceof Array) {
+        const img = imgArray.filter(
             img => img.ratio && img.ratio.localeCompare(image_settings.ratio) === 0 &&
                 img.width === image_settings.width &&
                 img.height === image_settings.height
-        )[0].url;
+        )[0];
+        if (img) {
+            return img.url;
+        }
     }
     return ""; //default
 };
@@ -104,10 +107,9 @@ const render_events = function (response) {
             name,
         } = event;
         const imageURL = getImageURL(images);
-        if(startDateTime){
-            const startDate = moment(startDateTime);
-        }else{
-            const startDate = "";
+        let startDate = "";
+        if (startDateTime) {
+            startDate = moment(startDateTime).format("DD MMM, YYYY");
         }
 
         eventElement.attr("data-event-id", id);
@@ -117,7 +119,7 @@ const render_events = function (response) {
             alt: name
         });
         eventElement.find(".title").text(name);
-        eventElement.find(".datetime time").text(startDate.format("DD MMM, YYYY"));
+        eventElement.find(".datetime time").text(startDate);
 
         if (timezone) {
             eventElement.find(".timezone").text(", " + timezone.split("/")[1].replace("_", " "));
