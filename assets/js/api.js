@@ -1,76 +1,64 @@
-$(document).ready(function () {
-    const searchByKeyword = function() {
-        var name = $(".keyword").val().toLowerCase().trim();
-        var queryURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&keyword=" + name + "&apikey=" + TM_SETTTINGS.apikey;
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-        }).then(render_events);
+
+/**
+ * Display API fail error message to user and write out detail error object in console.
+ * @param {object} error - error response object
+ */
+const displayFailMessage = function (error) {
+    //display error message to user
+    $("#api-fail-error").show();
+
+    //write out error message in console for debugging purpose
+    console.log({ error });
+
+    //hide data contents
+    hideDataContainers();
+}
+
+/**
+ * Retrieve Ticketmaster Event details by ID and display it to the user. 
+ * @param {string} id - Ticketmaster event id 
+ */
+const getDetails = function (id){
+    const url = "https://app.ticketmaster.com/discovery/v2/events/" + id + ".json?" + "&apikey=" + TM_SETTTINGS.apikey;
+    $.ajax({
+        url: url,
+        method: "GET"
+    }).then(function (response) {
+        parseDetailsResponse(response);
+        render_event_details();
+    });
+}
+/**
+ * Retrieve search result from Ticketmaster API
+ * @param {string} url - URL string to make AJAX call
+ */
+const getSearchResult = function (url){
+    $.ajax({
+        url: url,
+        method: "GET"
+    })
+    .done(render_events)
+    .fail(displayFailMessage);
+}
+
+/**
+ * Search by keyword function for general search (search box in title/nav bar)
+ * Make ajax call to API to retrive and display the data to the user. 
+ */
+const searchByKeyword = function () {
+    const name = $(".keyword").val().toLowerCase().trim();
+    if (name.length === 0) {
+        //no keyword so prompt the user
+        $("#no-keyword-error").show();
+        //hide data contents not to confuse the users.
+        hideDataContainers();
+        return;
     }
 
-    //assign an event handler to Search button for quick search
-    $(".searchbykeyword").on('click', function (event) {
-        event.preventDefault();
-        searchByKeyword();
-    });
+    // make the ajax call to API. 
+    const queryURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&keyword=" + name + "&apikey=" + TM_SETTTINGS.apikey;
+    getSearchResult(queryURL);
+   
+}
 
-    // assign an event handler to Enter button for direct quick search from text input
-    
-    $("#inputText").on('keypress', function (event) {
-        if (event.keyCode === 13 ) {
-            event.preventDefault();
-            searchByKeyword();
-        }
 
-    });
-
-    $(".submit").on("click", function (event) {
-        event.preventDefault();
-        var country = $(".country").val().toLowerCase().trim();
-        var city = $(".city").val().toLowerCase().trim();
-        var keyword = $(".eventkeyword").val().toLowerCase().trim();
-        var classification = $('#classification :selected').text().trim();
-        var countryCode = "";
-        if (country !== "") {
-            var countryURL = "https://restcountries.eu/rest/v2/name/" + country;
-            $.ajax({
-                url: countryURL,
-                method: "GET"
-            }).then(function (response) {
-                countryCode = response[0].alpha2Code;
-
-                var withCountryCodeURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&classificationName=" + classification + "&countryCode=" + countryCode + "&keyword=" + keyword + "&city=" + city + "&apikey=" + TM_SETTTINGS.apikey;
-                $.ajax({
-                    url: withCountryCodeURL,
-                    method: "GET"
-                }).then(render_events);
-            });
-        } else {
-            var withoutCountryCodeURL = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&classificationName=" + classification + "&keyword=" + keyword + "&city=" + city + "&apikey=" + TM_SETTTINGS.apikey;
-            $.ajax({
-                url: withoutCountryCodeURL,
-                method: "GET"
-            }).then(render_events);
-        }
-    });
-
-    $("#events-container").on("click", ".show-details", function(){
-        var learnmore = $(this).attr("data-event-id");
-        var learnmoreURL = "https://app.ticketmaster.com/discovery/v2/events/" + learnmore + ".json?" + "&apikey=" + TM_SETTTINGS.apikey;
-            $.ajax({
-                url: learnmoreURL,
-                method: "GET"
-            }).then(function (response) {
-                parseDetailsResponse(response);
-                render_event_details();
-            });
-    });
-
-    $(".cancel").on("click", function(){
-        $(".country").val("");
-        $(".city").val("");
-        $(".eventkeyword").val("");
-        $('#classification option').eq(0).prop("selected",true);
-    });
-
-});

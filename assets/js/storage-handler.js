@@ -1,3 +1,6 @@
+/**
+ * StorageHandler class stores and retrieves data from localStorage. 
+ */
 class StorageHandler {
     /**
      * 

@@ -1,15 +1,47 @@
 /**
+ * clean up the forms
+ */
+const cleanForms = function () {
+    $("#search-form .cancel").trigger("click");
+    $("#keyword-search input.keyword").val("");
+};
+
+/**
+ * Hide both data and error containers.
+ */
+const hideAll = function () {
+    hideDataContainers();
+    hideErrors();
+};
+
+/**
+ * Hide the information containers 
+ */
+const hideDataContainers = function () {
+    $("#events-container").hide();
+    $("#details-container").removeClass("is-active");
+};
+
+/**
+ * hide all error messages
+ */
+const hideErrors = function () {
+    //hide all error messages
+    $(".error-message").hide();
+};
+
+/**
  * find the image according to API settings. 
  * @param {object[]} imgArray 
  */
-function getImageURL(imgArray) {
+const getImageURL = function (imgArray) {
     const image_settings = TM_SETTTINGS.image;
     return imgArray.filter(
         img => img.ratio.localeCompare(image_settings.ratio) === 0 &&
             img.width === image_settings.width &&
             img.height === image_settings.height
     )[0].url;
-}
+};
 
 /**
  * @typedef {object} tm_response_events
@@ -24,7 +56,31 @@ function getImageURL(imgArray) {
  * Render events for user display. 
  * @param {tm_response_events} response API response JSON object
  */
-function render_events(response) {
+const render_events = function (response) {
+    //first clean up the content by hiding all the non-static containers. 
+    hideAll();
+
+    if (!("_embedded" in response)) {
+        //this response is an empty response. so show no result error message to user. 
+        const errElement = $("#no-results-error");
+        const keyword = $("#keyword-search .keyword").val();
+        //get error message
+        let message;
+        if (keyword.length === 0) {
+            //not from keyword-seach box
+            message = MESSAGES.noResultAdvancedFormError;
+        } else {
+            message = `"${keyword}" ${MESSAGES.noResultSearchBoxErrorSuffix}`;
+        }
+
+        //add message to error section
+        errElement.find(".keyword").text(message);
+        errElement.show();
+        //clean up the form
+        cleanForms();
+        return;
+    }
+
     const elements = [];
     const { _embedded: { events } } = response;
     const events_container = $("#events-container");
@@ -48,7 +104,7 @@ function render_events(response) {
         const startDate = moment(startDateTime);
 
         eventElement.attr("data-event-id", id);
-        eventElement.find(".show-details").attr("data-event-id",id)
+        eventElement.find(".show-details").attr("data-event-id", id)
         eventElement.find(".image img").attr({
             src: imageURL,
             alt: name
@@ -62,12 +118,22 @@ function render_events(response) {
 
         elements.push(eventElement);
     }
+    // add contents to events-container
     events_container.append(elements);
-}
+    // display container to user
+    events_container.show();
+    //clean up the forms
+    cleanForms();
+};
 
-let CURRENT_EVENT;
 
-function parseDetailsResponse(response){
+
+
+/**
+ * Extract required details from JSON returned from API. 
+ * @param {object} response JSON object received back from API
+ */
+const parseDetailsResponse = function (response) {
     const {
         name,
         id,
@@ -90,13 +156,59 @@ function parseDetailsResponse(response){
         }
     } = response;
 
+    const parseSalesData = function (sales) {
+        let salesDetails = [];
+        for (let [key, data] of Object.entries(sales)) {
+            let s = {
+                name: key,
+                start: data.startDateTime,
+                end: data.endDateTime
+            }
+            salesDetails.push(s);
+        }
+        return salesDetails;
+    };
+
+    const parseVenues = function (data) {
+        let venues = [];
+        if (data instanceof Array) {
+            for (let d of data) {
+                let venue = {
+                    name: d.name,
+                    id: d.id,
+                    url: d.url,
+                };
+                if(d.location){
+                    venue.longitude = d.location.longitude;
+                    venue.latitude= d.location.latitude;
+                }
+                venues.push(venue);
+            }
+        }
+        return venues;
+    };
+
+    const parseAttractions = function (data) {
+        let attractions = [];
+        if (data instanceof Array) {
+            for (let attraction of data) {
+                attractions.push({
+                    name: attraction.name,
+                    id: attraction.id,
+                    url: attraction.url,
+                });
+            }
+        }
+        return attractions;
+    };
+
     CURRENT_EVENT = {
         id,
         name,
-        url, 
+        url,
         imageUrl: getImageURL(images),
         sales: parseSalesData(sales),
-        dates:{
+        dates: {
             start: dateTime,
             status: salesStatus
         },
@@ -106,60 +218,18 @@ function parseDetailsResponse(response){
         venues: parseVenues(venues),
         attractions: parseAttractions(attractions)
     };
-    if(timezone){
-        CURRENT_EVENT.timezone = timezone.split("/")[1].replace("_"," ");
-    }else {
+    if (timezone) {
+        CURRENT_EVENT.timezone = timezone.split("/")[1].replace("_", " ");
+    } else {
         CURRENT_EVENT.timezone = "";
     }
-
-
-    function parseSalesData(sales){
-        let salesDetails = [];
-        for(let [key,data] of Object.entries(sales)){
-            let s = {
-                name: key,
-                start: data.startDateTime,
-                end: data.endDateTime
-            }
-            salesDetails.push(s);
-        }
-        return salesDetails;
-    }
-
-    function parseVenues(data){
-        let venues = [];
-        for (let d of data) {
-            let v = {
-                name: d.name,
-                id: d.id,
-                url: d.url,
-                longitude: d.location.longitude,
-                latitude: d.location.latitude
-            };
-            venues.push(v);
-        }
-        return venues;
-    }
-
-    function parseAttractions(data){
-        let attractions = [];
-        for (let attraction of data) {
-            attractions.push({
-                name: attraction.name,
-                id: attraction.id,
-                url: attraction.url,
-            });
-        }
-        return attractions;
-    }
-}
+};
 
 
 /**
- * Render event detail page by using CURRENT_EVENT
- * 
+ * Render event detail page by using CURRENT_EVENT's data.
  */
-function render_event_details() {
+const render_event_details = function () {
     const container = $(".event-details");
     const id = CURRENT_EVENT.id;
 
@@ -168,9 +238,9 @@ function render_event_details() {
 
     // ----- title section ----- 
     container.find(".title").text(CURRENT_EVENT.name);
-    if(typeof FAVOURITES.find( fav => fav.id === id) === "undefined"){
+    if (typeof FAVOURITES.find(fav => fav.id === id) === "undefined") {
         container.find("button.toggle-favourite").removeClass("is-inverted");
-    }else {
+    } else {
         container.find("button.toggle-favourite").addClass("is-inverted")
     }
 
@@ -185,7 +255,7 @@ function render_event_details() {
             attractionLinks.push($("<span>").text(", "));
         }
         attractionLinks.push($("<a>", {
-            class: "attraction",
+            class: "attraction tag is-warning",
             "data-attraction-id": attraction.id,
             href: attraction.url,
             text: attraction.name
@@ -259,10 +329,10 @@ function render_event_details() {
     const date = moment(CURRENT_EVENT.dates.start).format(`${DATE_FORMAT} ${TIME_FORMAT}`);
 
     container.find(".event-dates-section time").text(date);
-    const timezone= CURRENT_EVENT.dates.timezone;
-    if(timezone){
+    const timezone = CURRENT_EVENT.dates.timezone;
+    if (timezone) {
         container.find(".event-dates-section .timezone").text(timezone);
-    }else {
+    } else {
         container.find(".event-dates-section .timezone-container").hide();
     }
 
@@ -275,26 +345,39 @@ function render_event_details() {
     venueContainer.empty();
     //populate the data. 
     for (let v of CURRENT_EVENT.venues) {
-        if (venueElements.length !== 0) {
-            venueElements.push($("<span>").text(", "));
+        if(v.name){
+            //only add new venue element if there is a name. 
+            if (venueElements.length !== 0) {
+                venueElements.push($("<span>").text(", "));
+            }
+            venueElements.push($("<a>", {
+                text: v.name,
+                href: v.url,
+                target: "_blank",
+                "data-id": v.id
+            }));
         }
-        venueElements.push($("<a>", {
-            text: v.name,
-            href: v.url,
-            target: "_blank",
-            "data-id": v.id
-        }));
+    }
+    if(venueElements.length === 0){
+        $(".venue-section").hide();
+    }else{
+        venueContainer.append(venueElements);
+        $(".venue-section").show();
     }
 
-    venueContainer.append(venueElements);
-
     // ----- map section -----
-    const longitude = CURRENT_EVENT.venues[0].longitude;
-    const latitude = CURRENT_EVENT.venues[0].latitude;
-    const coords = [];
-    coords.push(parseFloat(longitude));
-    coords.push(parseFloat(latitude));
-    constructMap(coords);
+    if(CURRENT_EVENT.venues[0].longitude){
+        // only add map if coordinates are known. 
+        const longitude = CURRENT_EVENT.venues[0].longitude;
+        const latitude = CURRENT_EVENT.venues[0].latitude;
+        const coords = [];
+        coords.push(parseFloat(longitude));
+        coords.push(parseFloat(latitude));
+        constructMap(coords);
+        $(".map-section").show();
+    }else{
+        $(".map-section").hide();
+    }
 
     // ----- TM-Link-section ------
     container.find(".official-link").attr({
@@ -303,5 +386,4 @@ function render_event_details() {
 
     //now display the container. 
     container.closest(".modal").addClass("is-active");
-    container.show();
-}
+};

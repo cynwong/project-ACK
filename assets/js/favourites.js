@@ -1,19 +1,8 @@
 
 /**
- * @type object[]
+ * render Favourites list for display
  */
-let FAVOURITES = [];
-
-/**
- * @type StorageHandler 
- */
-const STORAGE = new StorageHandler(STORAGE_KEY, FAVOURITES);
-/**
- * @type intervalID
- */
-let TIMER_ID;
-
-function populateFavourites() {
+const populateFavourites = function () {
     const container = $(".favourites-container");
     const elements = [];
     const today = moment();
@@ -29,12 +18,14 @@ function populateFavourites() {
         favElement.attr("id", favourite.id);
         favElement.attr("data-index", i);
         favElement.find(".title").text(favourite.name);
+        //if same day
         if (favDate.isSameOrBefore(today)) {
             favElement.find(".days").text("0");
             favElement.addClass("past");
         } else {
             const daysLeft = favDate.diff(today, "days");
             if (daysLeft < daysLeftToNext) {
+                //if nearer event, update pinned section
                 const pinned = $(".pinned-container");
                 const hoursLeft = favDate.diff(today, "hours") - (daysLeft * 24);
                 const minutesLeft = favDate.diff(today, "minutes") - (hoursLeft * 60) - (daysLeft * 24 * 60);
@@ -50,7 +41,7 @@ function populateFavourites() {
                 title.attr("id", favourite.id);
                 title.text(favourite.name);
                 daysLeftToNext = daysLeft;
-                if(TIMER_ID){
+                if (TIMER_ID) {
                     //clear previous timer. 
                     clearInterval(TIMER_ID);
                 }
@@ -102,17 +93,18 @@ function populateFavourites() {
             }
             favElement.find(".days").text(daysLeft);
         }
-
         elements.push(favElement);
     }
     //add favourites to the container for display
     container.append(elements);
 
     showFavourites();
-    
 }
 
-function hideFavourites(){
+/**
+ * If no favourite, hide all but no favourites message. 
+ */
+const hideFavourites = function () {
     const favContainer = $(".favourites-wrapper");
     //show no favourite message
     favContainer.find("#no-favourites").show();
@@ -123,7 +115,10 @@ function hideFavourites(){
 
 }
 
-function showFavourites(){
+/**
+ * if there is favourited event, show all except no favourite message. 
+ */
+const showFavourites = function () {
     const favContainer = $(".favourites-wrapper");
     //hide no favourite message
     favContainer.find("#no-favourites").hide();
@@ -138,86 +133,10 @@ function showFavourites(){
  *  and render the details page for user display
  * @param {number} index 
  */
-function resetCurrentEvent(index) {
+const resetCurrentEvent = function (index) {
     //reset CURRENT_EVENT
     CURRENT_EVENT = FAVOURITES[index];
 
     render_event_details();
 }
-$(document).ready(function () {
-    FAVOURITES = STORAGE.data;
-    if (FAVOURITES.length !== 0) {
-        populateFavourites();
-    }else{
-        hideFavourites();
-    }
-
-
-
-    // ======== Event Listerners for Favourites =======
-
-    $(".pinned-container .event-title").click(event => {
-        event.preventDefault();
-        resetCurrentEvent($(".pinned-container .event-title").data("index"));
-    })
-    $(".favourites-container").on("click", ".favourite .title", function (event) {
-        event.preventDefault();
-        resetCurrentEvent($(this).closest(".favourite").data("index"));
-    });
-
-    $("#event-details-container").on("click", "button.toggle-favourite", function () {
-        const id = $("#event-details-container").attr("data-event-id");
-        const index = FAVOURITES.findIndex(favourite => favourite.id === id);
-
-        if (index !== -1) {
-            // event in favourites 
-            // so delete the current event 
-            $(this).removeClass("is-inverted");
-            FAVOURITES.splice(index, 1);
-        } else {
-            // not in Favourites list
-            //add this event to favourite
-            $(this).addClass("is-inverted");
-            const newFavourite = {
-                attractions: CURRENT_EVENT.attractions,
-                classifications: CURRENT_EVENT.classifications,
-                dates: CURRENT_EVENT.dates,
-                id: CURRENT_EVENT.id,
-                imageUrl: CURRENT_EVENT.imageUrl,
-                info: CURRENT_EVENT.info,
-                name: CURRENT_EVENT.name,
-                pleaseNote: CURRENT_EVENT.pleaseNote,
-                sales: CURRENT_EVENT.sales,
-                url: CURRENT_EVENT.url,
-                venues: CURRENT_EVENT.venues
-            };
-            FAVOURITES.push(newFavourite);
-            if (FAVOURITES.length >= 2) {
-                FAVOURITES.sort((fav1, fav2) => {
-                    const date1 = moment(fav1.dates.start);
-                    const date2 = moment(fav2.dates.start);
-
-                    if (date1.isBefore(date2) === true) {
-                        return -1;
-                    } else if (date1.isSame(date2) === true) {
-                        return 0;
-                    } else if (date1.isAfter(date2) === true) {
-                        return 1;
-                    }
-                });
-            }
-        }
-        STORAGE.data = FAVOURITES;
-        if (FAVOURITES.length === 0) {
-            clearInterval(TIMER_ID);
-            hideFavourites();
-        } else {
-            populateFavourites();
-        }
-    });
-
-    $(".modal-close").click(function () {
-        $(".modal").removeClass("is-active");
-    })
-});
 
