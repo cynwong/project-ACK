@@ -35,6 +35,18 @@
     </header>
     <div id="bg-image"></div>
 
+    <!-- no search keyword error message -->
+    <div id="no-keyword-error" class="notification is-warning template error-message">
+        <button class="delete"></button>
+        Pleaes give a keyword to search.
+    </div>
+
+    <!-- fail error message -->
+    <div id="api-fail-error" class="notification is-warning template error-message">
+        <button class="delete"></button>
+        Something went wrong during data retrival. Please try again later.
+    </div>
+
     <!-- This is body with Search form -->
     <!-- This is main container -->
     <div class="columns">
@@ -165,9 +177,9 @@
         </div>
     </div>
     <div id="events-container" class="columns is-multiline is-0 is-mobile is-centered"></div>
-    <div class="modal ">
+    <div class="modal" id="details-container">
         <div class="modal-background"></div>
-        <div id="event-details-container" class="modal-card  event-details is-10 is-offset-1 template" data-event-id="">
+        <div  class="modal-card event-details is-10 is-offset-1" data-event-id="">
 
             <header class=" modal-card-head title-section">
                 <h3 class="title"></h3>
@@ -232,13 +244,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
 
-    <script src="./assets/js/api.js"></script>
     <script src="./assets/js/app_settings.js"></script>
-    <script src="./assets/js/temp_event_response.js"></script>
+    <script src="./assets/js/storage-handler.js"></script>
+    <script src="./assets/js/api.js"></script>
     <script src="./assets/js/map.js"></script>
     <script src="./assets/js/renderer.js"></script>
-    <script src="./assets/js/storage-handler.js"></script>
     <script src="./assets/js/favourites.js"></script>
+    <script src="./assets/js/init.js"></script>
 </body>
 
 </html>
