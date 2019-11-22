@@ -1,17 +1,5 @@
 
-/**
- * @type object[]
- */
-let FAVOURITES = [];
 
-/**
- * @type StorageHandler 
- */
-const STORAGE = new StorageHandler(STORAGE_KEY, FAVOURITES);
-/**
- * @type intervalID
- */
-let TIMER_ID;
 
 function populateFavourites() {
     const container = $(".favourites-container");
