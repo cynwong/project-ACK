@@ -69,11 +69,11 @@ $(document).ready(function () {
             $.ajax({
                 url: countryURL,
                 method: "GET"
-            }).then(function (response) {
+            }).done(function (response) {
                 countryCode = response[0].alpha2Code;
                 url = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&classificationName=" + classification + "&countryCode=" + countryCode + "&keyword=" + keyword + "&city=" + city + "&apikey=" + TM_SETTTINGS.apikey;
                 getSearchResult(url);
-            });
+            }).fail(displayFailMessage);
         } else {
             url = "https://app.ticketmaster.com/discovery/v2/events.json?size=8&classificationName=" + classification + "&keyword=" + keyword + "&city=" + city + "&apikey=" + TM_SETTTINGS.apikey;
             getSearchResult(url);

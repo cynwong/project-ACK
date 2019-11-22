@@ -19,14 +19,15 @@ const displayFailMessage = function (error) {
  * @param {string} id - Ticketmaster event id 
  */
 const getDetails = function (id){
+    disbledButtons();
     const url = "https://app.ticketmaster.com/discovery/v2/events/" + id + ".json?" + "&apikey=" + TM_SETTTINGS.apikey;
     $.ajax({
         url: url,
         method: "GET"
-    }).then(function (response) {
+    }).done(function (response) {
         parseDetailsResponse(response);
         render_event_details();
-    });
+    }).fail(displayFailMessage);
 }
 /**
  * Retrieve search result from Ticketmaster API
@@ -46,6 +47,7 @@ const getSearchResult = function (url){
  * Make ajax call to API to retrive and display the data to the user. 
  */
 const searchByKeyword = function () {
+    disbledButtons();
     const name = $(".keyword").val().toLowerCase().trim();
     if (name.length === 0) {
         //no keyword so prompt the user

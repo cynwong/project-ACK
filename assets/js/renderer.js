@@ -1,4 +1,39 @@
 /**
+ * disable form buttons
+ */
+const disbledButtons = function() {
+    const btnSearch = $("#keyword-search .searchbykeyword");
+    const btnSubmit =  $("#search-form .button.submit");
+    const btnCancel = $("#search-form .button.cancel");
+
+    btnSearch.prop("disabled",true);
+    btnSearch.css("cursor","wait");
+
+    btnSubmit.prop("disabled", true);
+    btnSubmit.css("cursor","wait");
+
+    btnCancel.prop("disabled", true);
+    btnCancel.css("cursor", "wait");
+}
+
+/**
+ * enable form buttons
+ */
+const enabledButtons = function() {
+    const btnSearch = $("#keyword-search .searchbykeyword");
+    const btnSubmit =  $("#search-form .button.submit");
+    const btnCancel = $("#search-form .button.cancel");
+
+    btnSearch.prop("disabled",false);
+    btnSearch.css("cursor","pointer");
+
+    btnSubmit.prop("disabled", false);
+    btnSubmit.css("cursor","pointer");
+
+    btnCancel.prop("disabled", false);
+    btnCancel.css("cursor", "pointer");
+}
+/**
  * clean up the forms
  */
 const cleanForms = function () {
@@ -36,11 +71,17 @@ const hideErrors = function () {
  */
 const getImageURL = function (imgArray) {
     const image_settings = TM_SETTTINGS.image;
-    return imgArray.filter(
-        img => img.ratio.localeCompare(image_settings.ratio) === 0 &&
-            img.width === image_settings.width &&
-            img.height === image_settings.height
-    )[0].url;
+    if (imgArray instanceof Array) {
+        const img = imgArray.filter(
+            img => img.ratio && img.ratio.localeCompare(image_settings.ratio) === 0 &&
+                img.width === image_settings.width &&
+                img.height === image_settings.height
+        )[0];
+        if (img) {
+            return img.url;
+        }
+    }
+    return ""; //default
 };
 
 /**
@@ -78,6 +119,7 @@ const render_events = function (response) {
         errElement.show();
         //clean up the form
         cleanForms();
+        enabledButtons();
         return;
     }
 
@@ -101,7 +143,10 @@ const render_events = function (response) {
             name,
         } = event;
         const imageURL = getImageURL(images);
-        const startDate = moment(startDateTime);
+        let startDate = "";
+        if (startDateTime) {
+            startDate = moment(startDateTime).format("DD MMM, YYYY");
+        }
 
         eventElement.attr("data-event-id", id);
         eventElement.find(".show-details").attr("data-event-id", id)
@@ -110,10 +155,10 @@ const render_events = function (response) {
             alt: name
         });
         eventElement.find(".title").text(name);
-        eventElement.find(".datetime time").text(startDate.format("DD MMM, YYYY"));
+        eventElement.find(".datetime time").text(startDate);
 
         if (timezone) {
-            eventElement.find(".timezone").text(", " + timezone.split("/")[1].replace("_"," "));
+            eventElement.find(".timezone").text(", " + timezone.split("/")[1].replace("_", " "));
         }
 
         elements.push(eventElement);
@@ -124,9 +169,9 @@ const render_events = function (response) {
     events_container.show();
     //clean up the forms
     cleanForms();
+    //re-enable the buttons 
+    enabledButtons();
 };
-
-
 
 
 /**
@@ -178,9 +223,9 @@ const parseDetailsResponse = function (response) {
                     id: d.id,
                     url: d.url,
                 };
-                if(d.location){
+                if (d.location) {
                     venue.longitude = d.location.longitude;
-                    venue.latitude= d.location.latitude;
+                    venue.latitude = d.location.latitude;
                 }
                 venues.push(venue);
             }
@@ -345,7 +390,7 @@ const render_event_details = function () {
     venueContainer.empty();
     //populate the data. 
     for (let v of CURRENT_EVENT.venues) {
-        if(v.name){
+        if (v.name) {
             //only add new venue element if there is a name. 
             if (venueElements.length !== 0) {
                 venueElements.push($("<span>").text(", "));
@@ -358,15 +403,15 @@ const render_event_details = function () {
             }));
         }
     }
-    if(venueElements.length === 0){
+    if (venueElements.length === 0) {
         $(".venue-section").hide();
-    }else{
+    } else {
         venueContainer.append(venueElements);
         $(".venue-section").show();
     }
 
     // ----- map section -----
-    if(CURRENT_EVENT.venues[0].longitude){
+    if (CURRENT_EVENT.venues[0].longitude) {
         // only add map if coordinates are known. 
         const longitude = CURRENT_EVENT.venues[0].longitude;
         const latitude = CURRENT_EVENT.venues[0].latitude;
@@ -375,7 +420,7 @@ const render_event_details = function () {
         coords.push(parseFloat(latitude));
         constructMap(coords);
         $(".map-section").show();
-    }else{
+    } else {
         $(".map-section").hide();
     }
 
@@ -386,4 +431,7 @@ const render_event_details = function () {
 
     //now display the container. 
     container.closest(".modal").addClass("is-active");
+
+    //re-enable the buttons 
+    enabledButtons();
 };
