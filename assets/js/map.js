@@ -6,10 +6,13 @@
  * 
  */
 function constructMap(coords) {
+    // check if coords are in correct form
     if (!(coords instanceof Array) || coords.length !== 2) {
         console.log(MESSAGES.mapWrongDataType);
         return;
     }
+
+    //create a mapbox object
     const map = new mapboxgl.Map({
         accessToken: MAP_KEY,
         container: "map-container",
@@ -17,6 +20,8 @@ function constructMap(coords) {
         center: coords,
         zoom: 14
     });
+    
+    //create and add a marker at the coordinates. 
     new mapboxgl.Marker()
         .setLngLat(coords)
         .addTo(map);
