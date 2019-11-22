@@ -9,6 +9,9 @@
 }
 
 /* Header or Navbar */
+navbar label {
+    font-size: 24px;
+}
 
 /* Background image */
 #bg-image {
@@ -94,10 +97,6 @@
     z-index: 0;
     border-radius: 10px;
 }
-#search-form label {
-    font-size: 24px;
-}
-
 
 /* Searched results section */
 #events-container{
