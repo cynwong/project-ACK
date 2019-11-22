@@ -51,60 +51,62 @@ const populateFavourites = function () {
                 title.attr("id", favourite.id);
                 title.text(favourite.name);
                 daysLeftToNext = daysLeft;
-                if (TIMER_ID) {
-                    //clear previous timer. 
-                    clearInterval(TIMER_ID);
-                }
-                //start the timer
-                TIMER_ID = setInterval(() => {
-                    const pinned = $(".pinned-container");
-                    const secondsElement = pinned.find(".seconds");
-                    let seconds = parseInt(secondsElement.data("seconds"));
-                    if (seconds === 0) {
-                        const minutesElement = pinned.find(".minutes");
-                        let minutes = parseInt(minutesElement.data("minutes"));
-
-                        if (minutes === 0) {
-                            const hoursElement = pinned.find(".hours");
-                            let hours = parseInt(hoursElement.data("hours"));
-
-                            if (hours === 0) {
-                                const daysElement = pinned.find(".days");
-                                let days = parseInt(daysElement.data("days"));
-                                //reduce one day and reset hours to 24
-                                days--;
-                                hours = 24;
-                                //update daysElement
-                                daysElement.text(formatNumber(days));
-                                daysElement.data("days", days);
-                            }
-                            //reduce one hours and reset minutes
-                            hours--;
-                            minutes = 60;
-                            //update hours element
-                            hoursElement.text(formatNumber(hours));
-                            hoursElement.data("hours", hours);
-                        }
-                        //reduce one minute and reset seconds
-                        minutes--;
-                        seconds = 60;
-                        //update minutes element
-                        minutesElement.text(formatNumber(minutes));
-                        minutesElement.data("minutes", minutes);
-                    }
-                    //reduce seconds by one
-                    seconds--;
-                    //update second element
-                    secondsElement.text(formatNumber(seconds));
-                    secondsElement.data("seconds", seconds);
-
-                }, 1000);
+                
                 continue;
             }
             favElement.find(".days").text(daysLeft);
         }
         elements.push(favElement);
     }
+
+    if (TIMER_ID) {
+        //clear previous timer. 
+        clearInterval(TIMER_ID);
+    }
+    //start the timer
+    TIMER_ID = setInterval(() => {
+        const pinned = $(".pinned-container");
+        const secondsElement = pinned.find(".seconds");
+        let seconds = parseInt(secondsElement.data("seconds"));
+        if (seconds === 0) {
+            const minutesElement = pinned.find(".minutes");
+            let minutes = parseInt(minutesElement.data("minutes"));
+
+            if (minutes === 0) {
+                const hoursElement = pinned.find(".hours");
+                let hours = parseInt(hoursElement.data("hours"));
+
+                if (hours === 0) {
+                    const daysElement = pinned.find(".days");
+                    let days = parseInt(daysElement.data("days"));
+                    //reduce one day and reset hours to 24
+                    days--;
+                    hours = 24;
+                    //update daysElement
+                    daysElement.text(formatNumber(days));
+                    daysElement.data("days", days);
+                }
+                //reduce one hours and reset minutes
+                hours--;
+                minutes = 60;
+                //update hours element
+                hoursElement.text(formatNumber(hours));
+                hoursElement.data("hours", hours);
+            }
+            //reduce one minute and reset seconds
+            minutes--;
+            seconds = 60;
+            //update minutes element
+            minutesElement.text(formatNumber(minutes));
+            minutesElement.data("minutes", minutes);
+        }
+        //reduce seconds by one
+        seconds--;
+        //update second element
+        secondsElement.text(formatNumber(seconds));
+        secondsElement.data("seconds", seconds);
+
+    }, 1000);
     //add favourites to the container for display
     container.append(elements);
 
