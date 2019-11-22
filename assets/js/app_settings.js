@@ -26,3 +26,6 @@ const TIME_FORMAT = "hh:mmA";
 
 // for local storage
 const STORAGE_KEY = "favourites";
+
+// currently viewed event
+let CURRENT_EVENT;
