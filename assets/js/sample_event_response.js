@@ -1,3 +1,8 @@
+/**
+ * Sample responses from TM API
+ */
+
+ // sample response for search
 const response = {
     "_embedded": {
         "events": [
@@ -580,6 +585,7 @@ const response = {
     }
 };
 
+//sample response for event details response. 
 const EVENT_DETAIL = {
     "name": "Sunday Service  Kanye West and The Sunday Service Collective",
     "type": "event",
