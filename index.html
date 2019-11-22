@@ -10,16 +10,17 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
     <link rel="stylesheet" href="assets/css/common.css" />
 
-    <title>ACK Search App</title>
+    <title>Searchy</title>
 </head>
 
 <body>
     <header class="navbar is-warning">
         <div class="navbar-brand level-item">
             <a class="navbar-item" href="#">
-                <label width="112" height="28">ACK</label>
+                <label width="112" height="28">Searchy</label>
             </a>
         </div>
+        <!-- Keyword search box -->
         <div id="keyword-search" class="level-item">
             <div class="field has-addons">
                 <p class="control">
@@ -53,9 +54,8 @@
         Something went wrong during data retrival. Please try again later.
     </div>
 
-    <!-- This is body with Search form -->
-    <!-- This is main container -->
     <div class="columns">
+        <!-- Favourite section -->
         <div class=" column is-half-tablet is-two-fifths-desktop favourites-wrapper">
             <div id="no-favourites" class="message">No Favourite Event</div>
             <div class="favourite level template" id="" data-index="">
@@ -66,10 +66,9 @@
                     <div class="level-item">
                         <span class="days"></span>&nbsp;days left
                     </div>
-                    
                 </div>
             </div>
-            <div class="column pinned-container ">
+            <div class="column pinned-container hidden">
                 <div class="label">Time Left</div>
                 <div class="level is-mobile">
                     <div class="level-item has-text-centered">
@@ -103,22 +102,18 @@
             </div>
             <div class="column favourites-container"></div>
         </div>
-        <!-- Container of Search box -->
+        <!-- Container of Advanced Search box -->
         <div class="column is-half-tablet is-two-fifths-desktop is-offset-1" id="search-form">
-
             <div class="field">
                 <label class="label">Event Keyword</label>
                 <div class="control">
                     <input class="input is-info is-rounded eventkeyword" type="text" placeholder="Text input">
                 </div>
             </div>
-
-            <!-- //dropdown music , sports, arts,theatre& comedy, family&attartractions -->
             <div class="field">
                 <div class="field">
                     <label class="label">What sort of event is this ?</label>
                 </div>
-
                 <div class="control">
                     <div class="select is-warning is-rounded">
                         <select id="classification">
@@ -130,21 +125,18 @@
                     </div>
                 </div>
             </div>
-
             <div class="field">
                 <label class="label">City</label>
                 <div class="control">
                     <input class="input is-success is-rounded city" type="text" placeholder="Text input">
                 </div>
             </div>
-
             <div class="field">
                 <label class="label">Country</label>
                 <div class="control">
                     <input class="input is-warning is-rounded country" type="text" placeholder="Text input">
                 </div>
             </div>
-
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-link is-rounded is-hovered is-hovered submit">Search</button>
@@ -153,13 +145,11 @@
                     <button class="button is-link is-light is-rounded cancel">Cancel</button>
                 </div>
             </div>
-
         </div>
-
     </div>
 
-    <!-- This is search result display page -->
-    <!-- This is card template -->
+    <!-- Searched results/events display Section -->
+    <!-- Template for searched event -->
     <div class="column is-three-fifths-touch is-one-quarter-desktop event template" id="card-size">
         <div class="card">
             <div class="card-image">
@@ -168,13 +158,8 @@
                 </figure>
             </div>
             <div class="card-content">
-                <div class="title">
-                    <!-- <a href="#"></a> -->
-                </div>
-                <div class="content">
-
-
-                </div>
+                <div class="title"></div>
+                <div class="content"></div>
                 <div class="datetime">
                     <time></time> <span class="timezone"></span>
                 </div>
@@ -182,11 +167,14 @@
             </div>
         </div>
     </div>
+    <!-- container for searched result -->
     <div id="events-container" class="columns is-multiline is-0 is-mobile is-centered"></div>
+
+    <!-- Event detail page section -->
+    <!-- Event details modal container -->
     <div class="modal" id="details-container">
         <div class="modal-background"></div>
         <div  class="modal-card event-details is-10 is-offset-1" data-event-id="">
-
             <header class=" modal-card-head title-section">
                 <h3 class="title"></h3>
                 <button class="toggle-favourite button is-warning is-rounded">&hearts; Favourite</button>
@@ -205,9 +193,7 @@
                         <div class="classifications breadcrumb has-arrow-separator"></div>
                     </p>
                 </section>
-
                 <section class="description-section"></section>
-
                 <section class="sales-dates-section">
                     <p><strong>Ticket sales dates</strong>:</p>
                     <div class="sales-dates"></div>
@@ -219,20 +205,16 @@
                         <time></time>
                         <span class="timezone-container">( <span class="timezone"></span> time )</span>
                     </p>
-
                 </section>
-
                 <section class="venue-section">
                     <p class="venue">
                         <strong>Venues</strong>:
                     </p>
                     <div class="venues-container"></div>
                 </section>
-
                 <section class="map-section">
                     <div id="map-container"></div>
                 </section>
-
                 <footer class="tm-link-section modal-card-foot">
                     <p>
                         See this event in
