@@ -1,7 +1,8 @@
 
-
-
-function populateFavourites() {
+/**
+ * render Favourites list for display
+ */
+const populateFavourites = function () {
     const container = $(".favourites-container");
     const elements = [];
     const today = moment();
@@ -17,12 +18,14 @@ function populateFavourites() {
         favElement.attr("id", favourite.id);
         favElement.attr("data-index", i);
         favElement.find(".title").text(favourite.name);
+        //if same day
         if (favDate.isSameOrBefore(today)) {
             favElement.find(".days").text("0");
             favElement.addClass("past");
         } else {
             const daysLeft = favDate.diff(today, "days");
             if (daysLeft < daysLeftToNext) {
+                //if nearer event, update pinned section
                 const pinned = $(".pinned-container");
                 const hoursLeft = favDate.diff(today, "hours") - (daysLeft * 24);
                 const minutesLeft = favDate.diff(today, "minutes") - (hoursLeft * 60) - (daysLeft * 24 * 60);
@@ -38,7 +41,7 @@ function populateFavourites() {
                 title.attr("id", favourite.id);
                 title.text(favourite.name);
                 daysLeftToNext = daysLeft;
-                if(TIMER_ID){
+                if (TIMER_ID) {
                     //clear previous timer. 
                     clearInterval(TIMER_ID);
                 }
@@ -90,17 +93,18 @@ function populateFavourites() {
             }
             favElement.find(".days").text(daysLeft);
         }
-
         elements.push(favElement);
     }
     //add favourites to the container for display
     container.append(elements);
 
     showFavourites();
-    
 }
 
-function hideFavourites(){
+/**
+ * If no favourite, hide all but no favourites message. 
+ */
+const hideFavourites = function () {
     const favContainer = $(".favourites-wrapper");
     //show no favourite message
     favContainer.find("#no-favourites").show();
@@ -111,7 +115,10 @@ function hideFavourites(){
 
 }
 
-function showFavourites(){
+/**
+ * if there is favourited event, show all except no favourite message. 
+ */
+const showFavourites = function () {
     const favContainer = $(".favourites-wrapper");
     //hide no favourite message
     favContainer.find("#no-favourites").hide();
@@ -126,7 +133,7 @@ function showFavourites(){
  *  and render the details page for user display
  * @param {number} index 
  */
-function resetCurrentEvent(index) {
+const resetCurrentEvent = function (index) {
     //reset CURRENT_EVENT
     CURRENT_EVENT = FAVOURITES[index];
 
