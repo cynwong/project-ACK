@@ -303,5 +303,4 @@ function render_event_details() {
 
     //now display the container. 
     container.closest(".modal").addClass("is-active");
-    container.show();
 }
