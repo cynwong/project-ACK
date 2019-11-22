@@ -1,4 +1,39 @@
 /**
+ * disable form buttons
+ */
+const disbledButtons = function() {
+    const btnSearch = $("#keyword-search .searchbykeyword");
+    const btnSubmit =  $("#search-form .button.submit");
+    const btnCancel = $("#search-form .button.cancel");
+
+    btnSearch.prop("disabled",true);
+    btnSearch.css("cursor","wait");
+
+    btnSubmit.prop("disabled", true);
+    btnSubmit.css("cursor","wait");
+
+    btnCancel.prop("disabled", true);
+    btnCancel.css("cursor", "wait");
+}
+
+/**
+ * enable form buttons
+ */
+const enabledButtons = function() {
+    const btnSearch = $("#keyword-search .searchbykeyword");
+    const btnSubmit =  $("#search-form .button.submit");
+    const btnCancel = $("#search-form .button.cancel");
+
+    btnSearch.prop("disabled",false);
+    btnSearch.css("cursor","pointer");
+
+    btnSubmit.prop("disabled", false);
+    btnSubmit.css("cursor","pointer");
+
+    btnCancel.prop("disabled", false);
+    btnCancel.css("cursor", "pointer");
+}
+/**
  * clean up the forms
  */
 const cleanForms = function () {
@@ -133,6 +168,8 @@ const render_events = function (response) {
     events_container.show();
     //clean up the forms
     cleanForms();
+    //re-enable the buttons 
+    enabledButtons();
 };
 
 
@@ -393,4 +430,7 @@ const render_event_details = function () {
 
     //now display the container. 
     container.closest(".modal").addClass("is-active");
+
+    //re-enable the buttons 
+    enabledButtons();
 };
