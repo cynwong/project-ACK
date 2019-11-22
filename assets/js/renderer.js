@@ -1,10 +1,18 @@
 /**
+ * clean up the forms
+ */
+const cleanForms = function () {
+    $("#search-form .cancel").trigger("click");
+    $("#keyword-search input.keyword").val("");
+};
+
+/**
  * Hide both data and error containers.
  */
 const hideAll = function () {
     hideDataContainers();
     hideErrors();
-}
+};
 
 /**
  * Hide the information containers 
@@ -12,7 +20,7 @@ const hideAll = function () {
 const hideDataContainers = function () {
     $("#events-container").hide();
     $("#details-container").removeClass("is-active");
-}
+};
 
 /**
  * hide all error messages
@@ -20,7 +28,7 @@ const hideDataContainers = function () {
 const hideErrors = function () {
     //hide all error messages
     $(".error-message").hide();
-}
+};
 
 /**
  * find the image according to API settings. 
@@ -33,7 +41,7 @@ const getImageURL = function (imgArray) {
             img.width === image_settings.width &&
             img.height === image_settings.height
     )[0].url;
-}
+};
 
 /**
  * @typedef {object} tm_response_events
@@ -55,8 +63,21 @@ const render_events = function (response) {
     if (!("_embedded" in response)) {
         //this response is an empty response. so show no result error message to user. 
         const errElement = $("#no-results-error");
-        errElement.find(".keyword").text($("#keyword-search .keyword").val());
+        const keyword = $("#keyword-search .keyword").val() ;
+        //get error message
+        let message;
+        if(keyword.length === 0 ){
+            //not from keyword-seach box
+            message = MESSAGES.noResultAdvancedFormError;
+        }else{
+            message = `"${keyword}" ${MESSAGES.noResultSearchBoxErrorSuffix}`;
+        }
+
+        //add message to error section
+        errElement.find(".keyword").text(message);
         errElement.show();
+        //clean up the form
+        cleanForms();
         return;
     }
 
@@ -102,10 +123,8 @@ const render_events = function (response) {
     // display container to user
     events_container.show();
     //clean up the forms
-    $("#search-form .cancel").trigger("click");
-    $("#keyword-search input.keyword").val("");
-
-}
+    cleanForms();
+};
 
 
 
@@ -137,6 +156,46 @@ const parseDetailsResponse = function (response) {
         }
     } = response;
 
+    const parseSalesData = function (sales) {
+        let salesDetails = [];
+        for (let [key, data] of Object.entries(sales)) {
+            let s = {
+                name: key,
+                start: data.startDateTime,
+                end: data.endDateTime
+            }
+            salesDetails.push(s);
+        }
+        return salesDetails;
+    };
+
+    const parseVenues = function (data) {
+        let venues = [];
+        for (let d of data) {
+            let v = {
+                name: d.name,
+                id: d.id,
+                url: d.url,
+                longitude: d.location.longitude,
+                latitude: d.location.latitude
+            };
+            venues.push(v);
+        }
+        return venues;
+    };
+
+    const parseAttractions = function (data) {
+        let attractions = [];
+        for (let attraction of data) {
+            attractions.push({
+                name: attraction.name,
+                id: attraction.id,
+                url: attraction.url,
+            });
+        }
+        return attractions;
+    };
+
     CURRENT_EVENT = {
         id,
         name,
@@ -158,48 +217,7 @@ const parseDetailsResponse = function (response) {
     } else {
         CURRENT_EVENT.timezone = "";
     }
-
-
-    const parseSalesData = function (sales) {
-        let salesDetails = [];
-        for (let [key, data] of Object.entries(sales)) {
-            let s = {
-                name: key,
-                start: data.startDateTime,
-                end: data.endDateTime
-            }
-            salesDetails.push(s);
-        }
-        return salesDetails;
-    }
-
-    const parseVenues = function (data) {
-        let venues = [];
-        for (let d of data) {
-            let v = {
-                name: d.name,
-                id: d.id,
-                url: d.url,
-                longitude: d.location.longitude,
-                latitude: d.location.latitude
-            };
-            venues.push(v);
-        }
-        return venues;
-    }
-
-    const parseAttractions = function (data) {
-        let attractions = [];
-        for (let attraction of data) {
-            attractions.push({
-                name: attraction.name,
-                id: attraction.id,
-                url: attraction.url,
-            });
-        }
-        return attractions;
-    }
-}
+};
 
 
 /**
@@ -349,4 +367,4 @@ const render_event_details = function () {
 
     //now display the container. 
     container.closest(".modal").addClass("is-active");
-}
+};
