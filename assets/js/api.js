@@ -24,10 +24,10 @@ const getDetails = function (id){
     $.ajax({
         url: url,
         method: "GET"
-    }).then(function (response) {
+    }).done(function (response) {
         parseDetailsResponse(response);
         render_event_details();
-    });
+    }).fail(displayFailMessage);
 }
 /**
  * Retrieve search result from Ticketmaster API
