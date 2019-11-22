@@ -119,6 +119,7 @@ const render_events = function (response) {
         errElement.show();
         //clean up the form
         cleanForms();
+        enabledButtons();
         return;
     }
 
