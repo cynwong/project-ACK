@@ -25,6 +25,17 @@ function getImageURL(imgArray) {
  * @param {tm_response_events} response API response JSON object
  */
 function render_events(response) {
+    //first clean up the content by hiding all the non-static containers. 
+    hideAll();
+
+    if(!("_embedded" in response)){
+        //this response is an empty response. so show no result error message to user. 
+        const errElement = $("#no-results-error");
+        errElement.find(".keyword").text($("#keyword-search .keyword").val());
+        errElement.show();
+        return;
+    }
+
     const elements = [];
     const { _embedded: { events } } = response;
     const events_container = $("#events-container");
